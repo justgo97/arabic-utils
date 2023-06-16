@@ -10,11 +10,28 @@ An NPM package written in typescript that provides some utilites for handling Ar
 
 # Usage
 
-`import ArabicString from "arabic-utils";`
-
-# Example
-
+```javascript
+import ArabicString from "arabic-utils";
 ```
-ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام")
-//=> " عَلَيْكُمُ"
+
+### removeDiacritics()
+
+Removes diacritics from the input string.
+
+Example:
+
+```javascript
+const normalized = ArabicString("السَّلَامُ عَلَيْكُمُ").removeDiacritics();
+console.log(normalized); // السلام عليكم
+```
+
+### remove(textToRemove: string)
+
+Removes occurrences of a specified text from an Arabic string.
+
+Example
+
+```javascript
+const newString = ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام");
+console.log(newString); //=> " عَلَيْكُمُ"
 ```
