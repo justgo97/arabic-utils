@@ -2,7 +2,11 @@
 
 An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, diacriticless search and more
 
-> This package assumes that the provided strings contains only Arabic and might not work as intended with a different input.
+> This package assumes that the provided strings contains only Arabic input and might not work as intended with a different input.
+
+# Instalation
+
+`npm install arabic-utils`
 
 # Usage
 
