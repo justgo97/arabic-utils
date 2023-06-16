@@ -1,0 +1,40 @@
+{
+  "name": "arabic-utils",
+  "version": "1.0.0",
+  "description": "Utilities for handling Arabic strings such as removing diacritics, diacriticless search and more.",
+  "type": "module",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justgo97/arabic-utils.git"
+  },
+  "keywords": [
+    "arabic",
+    "diacritics",
+    "string"
+  ],
+  "author": "Hamdi Maraoui",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justgo97/arabic-utils/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.2",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  }
+}
