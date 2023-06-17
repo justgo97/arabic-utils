@@ -14,6 +14,6 @@ test("returns true", () => {
   );
 });
 
-test("returns true", () => {
+test("returns false", () => {
   expect(ArabicString("السَّلَامُ عَلَيْكُمُ").includes("كتب")).toBe(false);
 });
