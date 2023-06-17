@@ -40,16 +40,17 @@ export function normalizeAlef(arabicText: string): string {
 
 /**
  * Removes occurrences of a specified text from an Arabic string.
- * The text is normalized by extracting Arabic letters before removing the specified text.
  *
  * @param {string} arabicText - The input Arabic string.
+ * @param {string} normalizedText - The input normamized to check the text to remove against.
  * @param {string} textToRemove - The text to be removed from the string.
  * @returns {string} The modified string with the specified text removed.
  */
-export function removeText(arabicText: string, textToRemove: string): string {
-  // Normalize the Arabic text by extracting Arabic letters
-  const normalizedText = removeDiacritics(arabicText);
-
+export function removeText(
+  arabicText: string,
+  normalizedText: string,
+  textToRemove: string
+): string {
   // Check if the text to remove exists in the normalized text
   if (!normalizedText.includes(textToRemove)) {
     // If not found, return the original string

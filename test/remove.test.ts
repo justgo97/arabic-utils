@@ -5,9 +5,8 @@ test("returns true", () => {
 });
 
 test("returns true", () => {
-  expect(
-    ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام") === " عَلَيْكُمُ"
-  ).toBe(true);
+  const expression = ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام");
+  expect(expression === " عَلَيْكُمُ").toBe(true);
 });
 
 test("returns true", () => {

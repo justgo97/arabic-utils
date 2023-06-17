@@ -1,13 +1,69 @@
 import { normalizeAlef, removeDiacritics, removeText } from "./utilities";
 
+interface INormalizeOptions {
+  normalizeAlef?: boolean;
+  removeDiacritics?: boolean;
+}
+
 /**
  * Utility class for working with Arabic strings.
  */
-class ArabicClass {
+export class ArabicClass {
   text: string;
+  options: INormalizeOptions = { normalizeAlef: false, removeDiacritics: true };
+  tempOptions: INormalizeOptions | undefined;
 
-  constructor(text: string) {
+  /**
+   * Create an instance of the ArabicClass utility.
+   * @param text - The Arabic text to work with.
+   * @param options - Optional: The options to customize the normalization process.
+   * @returns {ArabicClass} An instance of the ArabicClass utility.
+   */
+  constructor(text: string, options?: INormalizeOptions) {
     this.text = text;
+    if (options) {
+      this.options = { ...options };
+    }
+  }
+
+  /**
+   * Set the options to customize the normalization process for the current instance.
+   * @param options - The options to customize the normalization process.
+   * @returns {void}
+   */
+  setNormalizeOptions(options: INormalizeOptions): void {
+    this.options = { ...options };
+  }
+
+  /**
+   * Normalize the Arabic text based on the specified options or the default options.
+   * @param options - Optional: The options to customize the normalization process.
+   * @returns The normalized Arabic text.
+   */
+  normalize(options: INormalizeOptions = this.options): string {
+    // See if the there is a temporary option param set
+    const currentOptions = this.tempOptions ? this.tempOptions : options;
+
+    // Initialize a variable with the original text
+    let normalizedText = this.text;
+
+    // Check if diacritics removal is enabled
+    if (currentOptions.removeDiacritics) {
+      // Call the removeDiacritics function and assign the result back to normalizedText
+      normalizedText = removeDiacritics(normalizedText);
+    }
+
+    // Check if Alef normalization is enabled
+    if (currentOptions.normalizeAlef) {
+      // Call the normalizeAlef function and assign the result back to normalizedText
+      normalizedText = normalizeAlef(normalizedText);
+    }
+
+    // Reset temporary options param
+    this.tempOptions = undefined;
+
+    // Return the normalized text
+    return normalizedText;
   }
 
   /**
@@ -19,7 +75,7 @@ class ArabicClass {
    * @returns {boolean} True if the search string is found, false otherwise.
    */
   includes(searchString: string, position?: number): boolean {
-    const normalizedText = removeDiacritics(this.text);
+    const normalizedText = this.normalize();
     return normalizedText.includes(searchString, position);
   }
 
@@ -31,7 +87,7 @@ class ArabicClass {
    * @returns {boolean} True if the search string exists at the specified position, false otherwise.
    */
   startsWith(searchString: string, position?: number): boolean {
-    const normalizedText = removeDiacritics(this.text);
+    const normalizedText = this.normalize();
     return normalizedText.startsWith(searchString, position);
   }
 
@@ -51,7 +107,8 @@ class ArabicClass {
    * @returns {string} The modified string with the specified text removed.
    */
   remove(textToRemove: string): string {
-    return removeText(this.text, textToRemove);
+    const normalizedText = this.normalize();
+    return removeText(this.text, normalizedText, textToRemove);
   }
 
   /**
@@ -62,23 +119,38 @@ class ArabicClass {
     return normalizeAlef(this.text);
   }
 
-  static instance: ArabicClass | null = null;
+  /**
+   * Factory function for returning an instance of the ArabicClass utility.
+   * @param {string} text - The Arabic text to work with.
+   * @param options - Optional: The options to customize the normalization process.
+   * @returns {ArabicClass} An instance of the ArabicClass utility.
+   */
+  getInstance(text: string, options?: INormalizeOptions): ArabicClass {
+    this.text = text;
+
+    if (options) {
+      this.tempOptions = { ...options };
+    }
+    return this;
+  }
 
   /**
    * Factory function for creating an instance of the ArabicClass utility.
    * @param {string} text - The Arabic text to work with.
+   * @param options - Optional: The options to customize the normalization process.
    * @returns {ArabicClass} An instance of the ArabicClass utility.
    */
-  static getInstance(text: string): ArabicClass {
-    if (!ArabicClass.instance) {
-      ArabicClass.instance = new ArabicClass(text);
-    } else {
-      ArabicClass.instance.text = text;
-    }
-    return ArabicClass.instance;
+  static createInstance(text: string = "", options?: INormalizeOptions) {
+    const newClass = new ArabicClass(text, options);
+    return newClass.getInstance.bind(newClass);
   }
 }
 
-const ArabicString = ArabicClass.getInstance;
-
+/**
+ * Utility to work with Arabic strings.
+ * @param text - The Arabic text to work with.
+ * @param options - Optional: The options to customize the normalization process.
+ * @returns {ArabicClass} An instance of the ArabicClass utility.
+ */
+const ArabicString = ArabicClass.createInstance();
 export default ArabicString;
