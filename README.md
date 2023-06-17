@@ -1,6 +1,6 @@
 # arabic-utils package repository
 
-An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, diacriticless search and more
+An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, tatweel and more.
 
 # Instalation
 
@@ -63,3 +63,11 @@ Example:
 ```javascript
 console.log(ArabicString("الآن إكتمل الأمل").normalizeAlef()); // "الان اكتمل الامل"
 ```
+
+# TODO
+
+- [ ] Consider adding an CJS module format support
+- [ ] Add a method to get match results in array format ( useful for the purpose of highlighting and such )
+- [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
+- [ ] Add replace method
+- [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true )
