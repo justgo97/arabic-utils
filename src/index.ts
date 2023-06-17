@@ -140,7 +140,10 @@ export class ArabicClass {
    * @param options - Optional: The options to customize the normalization process.
    * @returns {ArabicClass} An instance of the ArabicClass utility.
    */
-  static createInstance(text: string = "", options?: INormalizeOptions) {
+  static createInstance(
+    text: string = "",
+    options?: INormalizeOptions
+  ): (text: string, options?: INormalizeOptions | undefined) => ArabicClass {
     const newClass = new ArabicClass(text, options);
     return newClass.getInstance.bind(newClass);
   }
