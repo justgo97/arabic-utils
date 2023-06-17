@@ -1,4 +1,5 @@
 import { validArabicLetters } from "./arabicLetters";
+import { arabicSymbolsArray } from "./arabicSymbols";
 
 /**
  * Checks if a string is empty (contains only whitespace characters).
@@ -7,28 +8,6 @@ import { validArabicLetters } from "./arabicLetters";
  */
 function isStringEmpty(str: string): boolean {
   return str.trim().length === 0;
-}
-
-/**
- * Filters out characters from the input string that are not present in the validChars array.
- * @param {string} input - The input string.
- * @param {string[]} validChars - An array of valid characters.
- * @returns {string} The filtered string.
- */
-function filterCharacters(input: string, validChars: string[]): string {
-  return input
-    .split("")
-    .filter((char) => validChars.includes(char) || isStringEmpty(char))
-    .join("");
-}
-
-/**
- * Filters out anything but valid Arabic letters from the input string.
- * @param {string} input - The input string.
- * @returns {string} The filtered string containing only Arabic letters without any diacritics.
- */
-export function extractArabicLetters(input: string): string {
-  return filterCharacters(input, validArabicLetters);
 }
 
 /**
@@ -69,7 +48,7 @@ export function normalizeAlef(arabicText: string): string {
  */
 export function removeText(arabicText: string, textToRemove: string): string {
   // Normalize the Arabic text by extracting Arabic letters
-  const normalizedText = extractArabicLetters(arabicText);
+  const normalizedText = removeDiacritics(arabicText);
 
   // Check if the text to remove exists in the normalized text
   if (!normalizedText.includes(textToRemove)) {
@@ -94,4 +73,16 @@ export function removeText(arabicText: string, textToRemove: string): string {
 
   // Return the modified string
   return result;
+}
+
+/**
+ * Removes diacritics from the input string.
+ * @param {string} arabicText - The input Arabic text to be normalized.
+ * @returns {string} The filtered string containing only valid Arabic letters.
+ */
+export function removeDiacritics(arabicText: string): string {
+  return arabicText
+    .split("")
+    .filter((char) => !arabicSymbolsArray.includes(char))
+    .join("");
 }

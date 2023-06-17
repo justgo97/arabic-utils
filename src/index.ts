@@ -1,4 +1,4 @@
-import { extractArabicLetters, normalizeAlef, removeText } from "./utilities";
+import { normalizeAlef, removeDiacritics, removeText } from "./utilities";
 
 /**
  * Utility class for working with Arabic strings.
@@ -19,7 +19,7 @@ class ArabicClass {
    * @returns {boolean} True if the search string is found, false otherwise.
    */
   includes(searchString: string, position?: number): boolean {
-    const normalizedText = extractArabicLetters(this.text);
+    const normalizedText = removeDiacritics(this.text);
     return normalizedText.includes(searchString, position);
   }
 
@@ -31,7 +31,7 @@ class ArabicClass {
    * @returns {boolean} True if the search string exists at the specified position, false otherwise.
    */
   startsWith(searchString: string, position?: number): boolean {
-    const normalizedText = extractArabicLetters(this.text);
+    const normalizedText = removeDiacritics(this.text);
     return normalizedText.startsWith(searchString, position);
   }
 
@@ -40,7 +40,7 @@ class ArabicClass {
    * @returns {string} The filtered string containing only valid Arabic letters.
    */
   removeDiacritics(): string {
-    return extractArabicLetters(this.text);
+    return removeDiacritics(this.text);
   }
 
   /**
