@@ -1,8 +1,14 @@
-import { normalizeAlef, removeDiacritics, removeText } from "./utilities";
+import {
+  normalizeAlef,
+  removeDiacritics,
+  removeTatweel,
+  removeText,
+} from "./utilities";
 
 interface INormalizeOptions {
   normalizeAlef?: boolean;
   removeDiacritics?: boolean;
+  removeTatweel?: boolean;
 }
 
 /**
@@ -10,7 +16,11 @@ interface INormalizeOptions {
  */
 export class ArabicClass {
   text: string;
-  options: INormalizeOptions = { normalizeAlef: false, removeDiacritics: true };
+  options: INormalizeOptions = {
+    normalizeAlef: false,
+    removeDiacritics: true,
+    removeTatweel: true,
+  };
   tempOptions: INormalizeOptions | undefined;
 
   /**
@@ -57,6 +67,10 @@ export class ArabicClass {
     if (currentOptions.normalizeAlef) {
       // Call the normalizeAlef function and assign the result back to normalizedText
       normalizedText = normalizeAlef(normalizedText);
+    }
+
+    if (currentOptions.removeTatweel) {
+      normalizedText = removeTatweel(normalizedText);
     }
 
     // Reset temporary options param
@@ -117,6 +131,15 @@ export class ArabicClass {
    */
   normalizeAlef(): string {
     return normalizeAlef(this.text);
+  }
+
+  /**
+   * Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
+   *
+   * @returns {string} The modified string with ARABIC TATWEEL characters removed.
+   */
+  removeTatweel(): string {
+    return removeTatweel(this.text);
   }
 
   /**

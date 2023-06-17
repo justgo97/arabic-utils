@@ -87,3 +87,13 @@ export function removeDiacritics(arabicText: string): string {
     .filter((char) => !arabicSymbolsArray.includes(char))
     .join("");
 }
+
+/**
+ * Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
+ *
+ * @param {string} arabicText - The Arabic text string to remove ARABIC TATWEEL characters from.
+ * @returns {string} The modified string with ARABIC TATWEEL characters removed.
+ */
+export function removeTatweel(arabicText: string): string {
+  return arabicText.replace(/\u0640/g, "");
+}
