@@ -53,15 +53,24 @@ class ArabicClass {
   remove(textToRemove: string): string {
     return removeText(this.text, textToRemove);
   }
+
+  static instance: ArabicClass | null = null;
+
+  /**
+   * Factory function for creating an instance of the ArabicClass utility.
+   * @param {string} text - The Arabic text to work with.
+   * @returns {ArabicClass} An instance of the ArabicClass utility.
+   */
+  static getInstance(text: string): ArabicClass {
+    if (!ArabicClass.instance) {
+      ArabicClass.instance = new ArabicClass(text);
+    } else {
+      ArabicClass.instance.text = text;
+    }
+    return ArabicClass.instance;
+  }
 }
 
-/**
- * Factory function for creating an instance of the ArabicClass utility.
- * @param {string} text - The Arabic text to work with.
- * @returns {ArabicClass} An instance of the ArabicClass utility.
- */
-const ArabicString = function (text: string): ArabicClass {
-  return new ArabicClass(text);
-};
+const ArabicString = ArabicClass.getInstance;
 
 export default ArabicString;
