@@ -18,6 +18,8 @@ test("returns false", () => {
 
 test("returns true", () => {
   expect(
-    ArabicString("أَحْضِرْ الكِتَابَ").removeDiacritics() === "أحضر الكتاب"
+    ArabicString(
+      "رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا"
+    ).removeDiacritics() === "ربنا لا تؤاخذنا إن نسينا أو أخطأنا"
   ).toBe(true);
 });
