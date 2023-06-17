@@ -9,7 +9,9 @@ test("returns true", () => {
 });
 
 test("returns true", () => {
-  expect(ArabicString("لآلئ").normalizeAlef() === "لالئ").toBe(true);
+  expect(
+    ArabicString("الآن إكتمل الأمل").normalizeAlef() === "الان اكتمل الامل"
+  ).toBe(true);
 });
 
 test("returns true", () => {
