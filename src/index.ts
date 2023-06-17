@@ -1,4 +1,4 @@
-import { extractArabicLetters, removeText } from "./utilities";
+import { extractArabicLetters, normalizeAlef, removeText } from "./utilities";
 
 /**
  * Utility class for working with Arabic strings.
@@ -52,6 +52,14 @@ class ArabicClass {
    */
   remove(textToRemove: string): string {
     return removeText(this.text, textToRemove);
+  }
+
+  /**
+   * Normalizes the occurrence of the Arabic letters "آ", "إ", and "أ" in the given Arabic text by replacing them with the letter "ا".
+   * @returns {string} The normalized Arabic text with "آ", "إ", and "أ" replaced by "ا".
+   */
+  normalizeAlef(): string {
+    return normalizeAlef(this.text);
   }
 
   static instance: ArabicClass | null = null;
