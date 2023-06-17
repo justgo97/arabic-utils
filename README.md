@@ -64,6 +64,16 @@ Example:
 console.log(ArabicString("الآن إكتمل الأمل").normalizeAlef()); // "الان اكتمل الامل"
 ```
 
+### removeTatweel()
+
+Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
+
+Example:
+
+```javascript
+console.log(ArabicString("كتــــــــــــــــاب").removeTatweel()); // "كتاب"
+```
+
 # TODO
 
 - [ ] Consider adding an CJS module format support
