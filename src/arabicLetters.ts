@@ -33,4 +33,7 @@ export const validArabicLetters = [
   "ي",
   "ى",
   "ة",
+  "ء",
+  "ؤ",
+  "ئ",
 ];
