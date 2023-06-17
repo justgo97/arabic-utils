@@ -100,11 +100,11 @@ export class ArabicClass {
   }
 
   /**
-   * Removes occurrences of a specified text from an Arabic string.
-   * The text is normalized by extracting Arabic letters before removing the specified text.
+   * Removes an occurrence of a specified text from an Arabic string.
+   * The text is normalized by extracting Arabic letters before removing the specified text but the returned text will be identical to the original.
    *
    * @param {string} textToRemove - The text to be removed from the string.
-   * @returns {string} The modified string with the specified text removed.
+   * @returns {string} The original string with the specified text removed.
    */
   remove(textToRemove: string): string {
     const normalizedText = this.normalize();
@@ -156,4 +156,5 @@ export class ArabicClass {
  * @returns {ArabicClass} An instance of the ArabicClass utility.
  */
 const ArabicString = ArabicClass.createInstance();
+
 export default ArabicString;
