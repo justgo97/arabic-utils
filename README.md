@@ -1,4 +1,4 @@
-# arabic-utils package repository
+# arabic-utils
 
 An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, tatweel and more.
 
