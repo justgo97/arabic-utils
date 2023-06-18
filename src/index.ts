@@ -4,14 +4,10 @@ import {
   removeTatweel,
   removeSuperscriptAlef,
   removeText,
+  INormalizeOptions,
+  normalizeArabic,
+  defaultOptions,
 } from "./utilities";
-
-interface INormalizeOptions {
-  normalizeAlef?: boolean;
-  removeDiacritics?: boolean;
-  removeTatweel?: boolean;
-  removeSuperscriptAlef?: boolean;
-}
 
 /**
  * Utility class for working with Arabic strings.
@@ -19,10 +15,7 @@ interface INormalizeOptions {
 export class ArabicClass {
   text: string;
   options: INormalizeOptions = {
-    normalizeAlef: false,
-    removeDiacritics: true,
-    removeTatweel: true,
-    removeSuperscriptAlef: true,
+    ...defaultOptions,
   };
   tempOptions: INormalizeOptions | undefined;
 
@@ -57,28 +50,8 @@ export class ArabicClass {
     // See if the there is a temporary option param set
     const currentOptions = this.tempOptions ? this.tempOptions : options;
 
-    // Initialize a variable with the original text
-    let normalizedText = this.text;
-
-    // Check if diacritics removal is enabled
-    if (currentOptions.removeDiacritics) {
-      // Call the removeDiacritics function and assign the result back to normalizedText
-      normalizedText = removeDiacritics(normalizedText);
-    }
-
-    // Check if Alef normalization is enabled
-    if (currentOptions.normalizeAlef) {
-      // Call the normalizeAlef function and assign the result back to normalizedText
-      normalizedText = normalizeAlef(normalizedText);
-    }
-
-    if (currentOptions.removeTatweel) {
-      normalizedText = removeTatweel(normalizedText);
-    }
-
-    if (currentOptions.removeSuperscriptAlef) {
-      normalizedText = removeSuperscriptAlef(normalizedText);
-    }
+    // Get the normalized string with the current options
+    const normalizedText = normalizeArabic(this.text, currentOptions);
 
     // Reset temporary options param
     this.tempOptions = undefined;

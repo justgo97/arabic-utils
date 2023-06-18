@@ -107,3 +107,47 @@ export function removeTatweel(arabicText: string): string {
 export function removeSuperscriptAlef(arabicText: string): string {
   return arabicText.replace(/\u0670/g, "");
 }
+
+export interface INormalizeOptions {
+  normalizeAlef?: boolean;
+  removeDiacritics?: boolean;
+  removeTatweel?: boolean;
+  removeSuperscriptAlef?: boolean;
+}
+
+export const defaultOptions: INormalizeOptions = {
+  normalizeAlef: false,
+  removeDiacritics: true,
+  removeTatweel: true,
+  removeSuperscriptAlef: true,
+};
+
+export function normalizeArabic(
+  arabicText: string,
+  options: INormalizeOptions = defaultOptions
+): string {
+  // Initialize a variable with the original text
+  let normalizedText = arabicText;
+
+  // Check if diacritics removal is enabled
+  if (options.removeDiacritics) {
+    // Call the removeDiacritics function and assign the result back to normalizedText
+    normalizedText = removeDiacritics(normalizedText);
+  }
+
+  // Check if Alef normalization is enabled
+  if (options.normalizeAlef) {
+    // Call the normalizeAlef function and assign the result back to normalizedText
+    normalizedText = normalizeAlef(normalizedText);
+  }
+
+  if (options.removeTatweel) {
+    normalizedText = removeTatweel(normalizedText);
+  }
+
+  if (options.removeSuperscriptAlef) {
+    normalizedText = removeSuperscriptAlef(normalizedText);
+  }
+
+  return normalizedText;
+}
