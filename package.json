@@ -1,6 +1,6 @@
 {
   "name": "arabic-utils",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Utilities for handling Arabic strings such as removing diacritics, diacriticless search and more.",
   "type": "module",
   "main": "dist/index.js",
