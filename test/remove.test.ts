@@ -21,3 +21,10 @@ test("returns true", () => {
       "السَّلَامُ عَلَيْكُمُ"
   ).toBe(true);
 });
+
+test("returns true", () => {
+  const input = "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ";
+  const token = "الرحمن";
+  const expected = "بِسْمِ اللَّهِ  الرَّحِيمِ";
+  expect(ArabicString(input).remove(token)).toBe(expected);
+});
