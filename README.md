@@ -25,7 +25,7 @@ console.log(normalized); // "السلام عليكم"
 
 ### remove(textToRemove: string)
 
-Removes occurrences of a specified text from an Arabic string.
+Removes an occurrence of a specified text from an Arabic string.
 
 Example:
 
@@ -76,7 +76,7 @@ console.log(ArabicString("كتــــــــــــــــاب").removeTatwe
 
 # TODO
 
-- [ ] Consider adding an CJS module format support
+- [ ] Consider adding CJS module format support
 - [ ] Add a method to get match results in array format ( useful for the purpose of highlighting and such )
 - [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
 - [ ] Add replace method

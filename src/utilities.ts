@@ -39,7 +39,7 @@ export function normalizeAlef(arabicText: string): string {
 }
 
 /**
- * Removes occurrences of a specified text from an Arabic string.
+ * Removes an occurrence of a specified text from an Arabic string.
  *
  * @param {string} arabicText - The input Arabic string.
  * @param {string} normalizedText - The input normamized to check the text to remove against.
@@ -75,7 +75,7 @@ export function removeText(
 
 /**
  * Removes diacritics from the input string.
- * @param {string} arabicText - The input Arabic text to be normalized.
+ * @param {string} arabicText - The input Arabic text to be modified.
  * @returns {string} The filtered string containing only valid Arabic letters.
  */
 export function removeDiacritics(arabicText: string): string {
