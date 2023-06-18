@@ -60,14 +60,11 @@ export function removeText(
   // Find the starting index of the text to remove in the normalized text
   const startIdx = normalizedText.indexOf(textToRemove);
 
-  // Calculate the ending index of the text to remove
-  const endIdx = startIdx + textToRemove.length;
-
   // Split the original Arabic text into separate letters
   const textSeparated = splitArabicLetters(arabicText);
 
   // Remove the specified text from the array using splice
-  textSeparated.splice(startIdx, endIdx);
+  textSeparated.splice(startIdx, textToRemove.length);
 
   // Join the modified array elements to get the resulting string
   const result = textSeparated.join("");
