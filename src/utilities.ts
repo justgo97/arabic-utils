@@ -119,6 +119,12 @@ export const defaultOptions: INormalizeOptions = {
   removeSuperscriptAlef: true,
 };
 
+/**
+ * Normalize the Arabic text based on the specified options or the default options.
+ * @param {string} arabicText - The input Arabic text to be modified.
+ * @param options - Optional: The options to customize the normalization process.
+ * @returns The normalized Arabic text.
+ */
 export function normalizeArabic(
   arabicText: string,
   options: INormalizeOptions = defaultOptions
