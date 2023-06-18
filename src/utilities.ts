@@ -97,3 +97,13 @@ export function removeDiacritics(arabicText: string): string {
 export function removeTatweel(arabicText: string): string {
   return arabicText.replace(/\u0640/g, "");
 }
+
+/**
+ * Removes SuperscriptAlef characters (U+0670) from an Arabic text string.
+ *
+ * @param {string} arabicText - The Arabic text string to remove SuperscriptAlef characters from.
+ * @returns {string} The modified string with SuperscriptAlef characters removed.
+ */
+export function removeSuperscriptAlef(arabicText: string): string {
+  return arabicText.replace(/\u0670/g, "");
+}

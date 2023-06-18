@@ -4,12 +4,10 @@ interface ISymbols {
   [key: string]: { value: string };
 }
 
-const commonArabicSymbols: ISymbols = {
+const commonArabicDiacritics: ISymbols = {
   kasra: { value: " ِ" }, //  ِ Arabic kasra - Garshuni: i
   shadda: { value: " ّ" }, //  ّ Arabic shadda - Garshuni
   sukun: { value: " ْ" }, //  ْ Arabic sukun
-
-  superscriptAlef: { value: " ٰ" }, //  ٰ Arabic letter superscript alef - Garshuni: long a
 
   fathatan: { value: " ً" }, //  ً Arabic fathatan - Garshuni: an
   kasratan: { value: " ٍ" }, //  ٍ Arabic kasratan - Garshuni: in
@@ -18,6 +16,6 @@ const commonArabicSymbols: ISymbols = {
   damma: { value: " ُ" }, //  ُ Arabic damma - Garshuni: u
 };
 
-export const arabicSymbolsArray = Object.values(commonArabicSymbols).map(
+export const arabicSymbolsArray = Object.values(commonArabicDiacritics).map(
   (symbol) => symbol.value.trim()
 );

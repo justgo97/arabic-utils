@@ -2,6 +2,7 @@ import {
   normalizeAlef,
   removeDiacritics,
   removeTatweel,
+  removeSuperscriptAlef,
   removeText,
 } from "./utilities";
 
@@ -9,6 +10,7 @@ interface INormalizeOptions {
   normalizeAlef?: boolean;
   removeDiacritics?: boolean;
   removeTatweel?: boolean;
+  removeSuperscriptAlef?: boolean;
 }
 
 /**
@@ -20,6 +22,7 @@ export class ArabicClass {
     normalizeAlef: false,
     removeDiacritics: true,
     removeTatweel: true,
+    removeSuperscriptAlef: true,
   };
   tempOptions: INormalizeOptions | undefined;
 
@@ -71,6 +74,10 @@ export class ArabicClass {
 
     if (currentOptions.removeTatweel) {
       normalizedText = removeTatweel(normalizedText);
+    }
+
+    if (currentOptions.removeSuperscriptAlef) {
+      normalizedText = removeSuperscriptAlef(normalizedText);
     }
 
     // Reset temporary options param
@@ -140,6 +147,15 @@ export class ArabicClass {
    */
   removeTatweel(): string {
     return removeTatweel(this.text);
+  }
+
+  /**
+   * Removes SuperscriptAlef characters (U+0670) from an Arabic text string.
+   *
+   * @returns {string} The modified string with SuperscriptAlef characters removed.
+   */
+  removeSuperscriptAlef(): string {
+    return removeSuperscriptAlef(this.text);
   }
 
   /**
