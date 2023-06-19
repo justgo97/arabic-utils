@@ -1,25 +1,15 @@
-import { validArabicLetters } from "./arabicLetters";
-import { arabicSymbolsArray } from "./arabicSymbols";
+import { arabicSymbolsArray, arabicDiacriticsArray } from "./arabicSymbols";
 
 /**
- * Checks if a string is empty (contains only whitespace characters).
- * @param {string} str - The string to check.
- * @returns {boolean} Returns `true` if the string is empty, `false` otherwise.
- */
-function isStringEmpty(str: string): boolean {
-  return str.trim().length === 0;
-}
-
-/**
- * Splits Arabic text into an array of individual letters while preserving diacritics and whitespaces.
+ * Splits Arabic text into an array of individual letters joining them with their diacritics and extra symbols if any.
  * @param {string} arabicText - The input Arabic text.
- * @returns {string[]} An array of individual Arabic letters and whitespaces if any.
+ * @returns {string[]} An array of individual Arabic letters joined with their diacritics and extra symbols if any.
  */
 export function splitArabicLetters(arabicText: string): string[] {
   const result: string[] = [];
 
   for (const char of arabicText) {
-    if (!isStringEmpty(char) && !validArabicLetters.includes(char)) {
+    if (arabicSymbolsArray.includes(char) && result.length) {
       result[result.length - 1] += char;
     } else {
       result.push(char);
@@ -51,14 +41,14 @@ export function removeText(
   normalizedText: string,
   textToRemove: string
 ): string {
+  // Find the starting index of the text to remove in the normalized text
+  const startIdx = normalizedText.indexOf(textToRemove);
+
   // Check if the text to remove exists in the normalized text
-  if (!normalizedText.includes(textToRemove)) {
+  if (startIdx === -1) {
     // If not found, return the original string
     return arabicText;
   }
-
-  // Find the starting index of the text to remove in the normalized text
-  const startIdx = normalizedText.indexOf(textToRemove);
 
   // Split the original Arabic text into separate letters
   const textSeparated = splitArabicLetters(arabicText);
@@ -76,12 +66,12 @@ export function removeText(
 /**
  * Removes diacritics from the input string.
  * @param {string} arabicText - The input Arabic text to be modified.
- * @returns {string} The filtered string containing only valid Arabic letters.
+ * @returns {string} The filtered string without the diacritics.
  */
 export function removeDiacritics(arabicText: string): string {
   return arabicText
     .split("")
-    .filter((char) => !arabicSymbolsArray.includes(char))
+    .filter((char) => !arabicDiacriticsArray.includes(char))
     .join("");
 }
 

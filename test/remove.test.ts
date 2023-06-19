@@ -28,3 +28,11 @@ test("returns true", () => {
   const expected = "بِسْمِ اللَّهِ  الرَّحِيمِ";
   expect(ArabicString(input).remove(token)).toBe(expected);
 });
+
+test("returns true", () => {
+  expect(ArabicString("... بدأ ...").remove("بدأ")).toBe("...  ...");
+});
+
+test("returns true", () => {
+  expect(ArabicString("كتب كتاب.").remove("كتاب")).toBe("كتب .");
+});
