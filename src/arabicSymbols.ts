@@ -1,5 +1,3 @@
-// Some code below is extracted from https://github.com/peshitta/arabic-code-util/blob/master/src/main.js
-
 interface ISymbolObject {
   value: string;
 }
@@ -19,15 +17,15 @@ type IDiacriticSymbols = {
 };
 
 const commonArabicDiacritics: IDiacriticSymbols = {
-  kasra: { value: " ِ" }, //  ِ Arabic kasra - Garshuni: i
-  shadda: { value: " ّ" }, //  ّ Arabic shadda - Garshuni
-  sukun: { value: " ْ" }, //  ْ Arabic sukun
+  kasra: { value: "\u0650" }, //  ِ kasra
+  shadda: { value: "\u0651" }, //  ّ shadda
+  sukun: { value: "\u0652" }, //  ْ sukun
 
-  fathatan: { value: " ً" }, //  ً Arabic fathatan - Garshuni: an
-  kasratan: { value: " ٍ" }, //  ٍ Arabic kasratan - Garshuni: in
-  dammatan: { value: " ٌ" }, //  ٌ Arabic dammatan - Garshuni: un
-  fatha: { value: " َ" }, //  َ Arabic fatha - Garshuni: a
-  damma: { value: " ُ" }, //  ُ Arabic damma - Garshuni: u
+  fathatan: { value: "\u064B" }, //  ً fathatan
+  kasratan: { value: "\u064D" }, //  ٍ kasratan
+  dammatan: { value: "\u064C" }, //  ٌ dammatan
+  fatha: { value: "\u064E" }, //  َ fatha
+  damma: { value: "\u064F" }, //  ُ damma
 };
 
 type ExtraArabicSymbols = "superscriptAlef" | "tatweel";
@@ -37,12 +35,12 @@ type IExtraArabicSymbols = {
 };
 
 const extraArabicSymbols: IExtraArabicSymbols = {
-  superscriptAlef: { value: "\u0670" },
-  tatweel: { value: "\u0640" },
+  superscriptAlef: { value: "\u0670" }, //  ٰ superscript alef
+  tatweel: { value: "\u0640" }, // ـ tatweel
 };
 
 export const arabicDiacriticsArray = Object.values(commonArabicDiacritics).map(
-  (symbol) => symbol.value.trim()
+  (symbol) => symbol.value
 );
 
 const extraSymbolsArray = Object.values(extraArabicSymbols).map(
@@ -51,5 +49,5 @@ const extraSymbolsArray = Object.values(extraArabicSymbols).map(
 
 // Combination of diacritics + extra symbols ( just superscriptAlef and tatweel for now )
 export const arabicSymbolsArray = Object.values(commonArabicDiacritics)
-  .map((symbol) => symbol.value.trim())
+  .map((symbol) => symbol.value)
   .concat(extraSymbolsArray);
