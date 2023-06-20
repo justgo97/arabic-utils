@@ -17,3 +17,15 @@ test("returns expected", () => {
     })
   ).toBe(expected);
 });
+
+test("returns expected", () => {
+  const input = "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ";
+  const expected = "بسم الله الرحمان الرحيم";
+  expect(
+    ArabicString(input).normalize({
+      removeDiacritics: true,
+      removeSuperscriptAlef: false,
+      normalizeSuperscripAlef: true,
+    })
+  ).toBe(expected);
+});

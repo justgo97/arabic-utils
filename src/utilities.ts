@@ -95,8 +95,56 @@ export function removeSuperscriptAlef(arabicText: string): string {
   return arabicText.replace(/\u0670/g, "");
 }
 
+export interface ISuperscriptAlefNormalizeOptions {
+  removeAuxiliaryAlefs: boolean;
+}
+
+export const defaultSuperscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions =
+  {
+    removeAuxiliaryAlefs: true,
+  };
+
+/**
+ * Normalizes the Superscript Alef characters.
+ * @param arabicText The input Arabic text to normalize.
+ * @param superscriptAlefNormalizeOptions Specifies Superscript Alef normalize options.
+ * @returns The normalized Arabic text with Superscript Alefs replaced or removed.
+ */
+export function normalizeSuperscriptAlef(
+  arabicText: string,
+  superscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions = defaultSuperscriptAlefNormalizeOptions
+): string {
+  let normalizedText = "";
+
+  /**
+   * it's common to omit Superscript Alefs before ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
+   */
+  if (superscriptAlefNormalizeOptions.removeAuxiliaryAlefs) {
+    const targetLetters = ["ه", "ل", "ذ", "ى"];
+
+    const splittedString: string[] = splitArabicLetters(arabicText);
+
+    for (let i = 0; i < splittedString.length; i++) {
+      const containsTargetLetter = targetLetters.some((letter) =>
+        splittedString[i]!.includes(letter)
+      );
+
+      if (containsTargetLetter) {
+        splittedString[i] = splittedString[i]!.replace(/[\u0670\u0640]/g, "");
+      }
+    }
+
+    normalizedText = splittedString.join("");
+  } else {
+    normalizedText = arabicText;
+  }
+
+  return normalizedText.replace(/\u0670|ـٰ/g, "ا");
+}
+
 export interface INormalizeOptions {
   normalizeAlef?: boolean;
+  normalizeSuperscripAlef?: boolean;
   removeDiacritics?: boolean;
   removeTatweel?: boolean;
   removeSuperscriptAlef?: boolean;
@@ -104,6 +152,7 @@ export interface INormalizeOptions {
 
 export const defaultNormalizeOptions: INormalizeOptions = {
   normalizeAlef: false,
+  normalizeSuperscripAlef: false,
   removeDiacritics: true,
   removeTatweel: true,
   removeSuperscriptAlef: true,
@@ -140,6 +189,8 @@ export function normalizeArabic(
 
   if (options.removeSuperscriptAlef) {
     normalizedText = removeSuperscriptAlef(normalizedText);
+  } else if (options.normalizeSuperscripAlef) {
+    normalizedText = normalizeSuperscriptAlef(normalizedText);
   }
 
   return normalizedText;

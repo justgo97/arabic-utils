@@ -9,6 +9,9 @@ import {
   defaultNormalizeOptions,
   getMatches,
   IMatchOptions,
+  normalizeSuperscriptAlef,
+  ISuperscriptAlefNormalizeOptions,
+  defaultSuperscriptAlefNormalizeOptions,
 } from "./utilities";
 
 /**
@@ -131,6 +134,17 @@ export class ArabicClass {
    */
   removeSuperscriptAlef(): string {
     return removeSuperscriptAlef(this.text);
+  }
+
+  /**
+   * Normalizes the Superscript Alef characters.
+   * @param superscriptAlefNormalizeOptions Specifies Superscript Alef normalize options.
+   * @returns The normalized Arabic text with Superscript Alefs replaced or removed.
+   */
+  normalizeSuperscriptAlef(
+    superscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions = defaultSuperscriptAlefNormalizeOptions
+  ): string {
+    return normalizeSuperscriptAlef(this.text, superscriptAlefNormalizeOptions);
   }
 
   /**
