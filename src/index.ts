@@ -6,7 +6,9 @@ import {
   removeText,
   INormalizeOptions,
   normalizeArabic,
-  defaultOptions,
+  defaultNormalizeOptions,
+  getMatches,
+  IMatchOptions,
 } from "./utilities";
 
 /**
@@ -15,7 +17,7 @@ import {
 export class ArabicClass {
   text: string;
   options: INormalizeOptions = {
-    ...defaultOptions,
+    ...defaultNormalizeOptions,
   };
   tempOptions: INormalizeOptions | undefined;
 
@@ -129,6 +131,35 @@ export class ArabicClass {
    */
   removeSuperscriptAlef(): string {
     return removeSuperscriptAlef(this.text);
+  }
+
+  /**
+   * Retrieves the matched parts from the given Arabic text based on the search token.
+   * @param searchToken - The token to search for.
+   * @param normalizeOptions - The options for text normalization (default: defaultOptions).
+   * @param matchOptions - The options for matching (default: defaultMatchOptions).
+   * @returns An array of matched parts as IMatch objects. If no matches are found, returns false.
+   *
+   * @example
+   * Input:
+   * arabicText: "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ"
+   * searchToken: "النسيم"
+   *
+   * console.log(ArabicString(arabicText).getMatches(searchToken))
+   *
+   * Output:
+   * [
+   *   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
+   *   { text: "النَّسيمِ", isMatch: true },
+   * ]
+   */
+  getMatches(searchToken: string, matchOptions?: IMatchOptions) {
+    // See if the there is a temporary option param set
+    const currentOptions = this.tempOptions
+      ? { ...this.tempOptions }
+      : { ...this.options };
+    this.tempOptions = undefined;
+    return getMatches(this.text, searchToken, currentOptions, matchOptions);
   }
 
   /**

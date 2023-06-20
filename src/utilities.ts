@@ -102,7 +102,7 @@ export interface INormalizeOptions {
   removeSuperscriptAlef?: boolean;
 }
 
-export const defaultOptions: INormalizeOptions = {
+export const defaultNormalizeOptions: INormalizeOptions = {
   normalizeAlef: false,
   removeDiacritics: true,
   removeTatweel: true,
@@ -117,7 +117,7 @@ export const defaultOptions: INormalizeOptions = {
  */
 export function normalizeArabic(
   arabicText: string,
-  options: INormalizeOptions = defaultOptions
+  options: INormalizeOptions = defaultNormalizeOptions
 ): string {
   // Initialize a variable with the original text
   let normalizedText = arabicText;
@@ -143,4 +143,106 @@ export function normalizeArabic(
   }
 
   return normalizedText;
+}
+
+/**
+ * Creates a regular expression that matches the provided term bounded by whitespace characters or start/end.
+ * @param term - The term to match.
+ * @returns A regular expression that matches the term bounded by whitespace characters or start/end.
+ */
+function identicalRegex(term: string): RegExp {
+  const startBoundary = term.charAt(0) === " " ? "" : "(?<=^|\\s)";
+  const endBoundary = term.charAt(term.length - 1) === " " ? "" : "(?=\\s|$)";
+  const regexPattern = `(${startBoundary}${term}${endBoundary})`;
+
+  return new RegExp(regexPattern);
+}
+
+export interface IMatch {
+  text: string;
+  isMatch: boolean;
+}
+
+export interface IMatchOptions {
+  matchIdentical?: boolean;
+}
+
+const defaultMatchOptions: IMatchOptions = {
+  matchIdentical: false,
+};
+
+/**
+ * Retrieves the matched parts from the given Arabic text based on the search token.
+ * @param arabicText - The Arabic text to search in.
+ * @param searchToken - The token to search for.
+ * @param normalizeOptions - The options for text normalization (default: defaultOptions).
+ * @param matchOptions - The options for matching (default: defaultMatchOptions).
+ * @returns An array of matched parts as IMatch objects. If no matches are found, returns false.
+ *
+ * @example
+ * Input:
+ * arabicText: "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ"
+ * searchToken: "النسيم"
+ *
+ * console.log(ArabicString(arabicText).getMatches(searchToken))
+ *
+ * Output:
+ * [
+ *   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
+ *   { text: "النَّسيمِ", isMatch: true },
+ * ]
+ */
+export function getMatches(
+  arabicText: string,
+  searchToken: string,
+  normalizeOptions: INormalizeOptions = defaultNormalizeOptions,
+  matchOptions: IMatchOptions = defaultMatchOptions
+) {
+  if (arabicText.trim() === "" || searchToken.trim() === "") return false;
+
+  const normalizedText = normalizeArabic(arabicText, normalizeOptions);
+
+  const isDiacriticless = normalizeOptions.removeDiacritics;
+
+  if (
+    matchOptions?.matchIdentical &&
+    !identicalRegex(searchToken).test(normalizedText)
+  ) {
+    return false;
+  } else if (!normalizedText.includes(searchToken)) {
+    return false;
+  }
+
+  // using RegExp with () here because we want to include the searchToken as a separate part in the resulting array.
+  const regex = matchOptions?.matchIdentical
+    ? identicalRegex(searchToken)
+    : new RegExp(`(${searchToken})`);
+
+  const parts = normalizedText.split(regex).filter((part) => part !== "");
+
+  const arrayText = splitArabicLetters(arabicText);
+
+  let traversedLength = 0;
+
+  const matchParts: IMatch[] = parts.map((part) => {
+    const partText = isDiacriticless
+      ? arrayText
+          .slice(
+            normalizedText.indexOf(part, traversedLength),
+            normalizedText.indexOf(part, traversedLength) + part.length
+          )
+          .join("")
+      : part;
+
+    const currentPart: IMatch = {
+      text: partText,
+      isMatch: part === searchToken,
+    };
+
+    traversedLength += part.length;
+
+    return currentPart;
+  });
+
+  return matchParts;
 }
