@@ -99,7 +99,7 @@ console.log(ArabicString(input).getMatches(token)).
 # TODO
 
 - [ ] Consider adding CJS module format support
-- [x] Add a method to get match results in array format ( useful for the purpose of highlighting and such )
+- [x] ~~Add a method to get match results in array format ( useful for the purpose of highlighting and such )~~
 - [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
 - [ ] Add replace method
 - [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true )
