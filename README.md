@@ -1,6 +1,6 @@
 # arabic-utils
 
-[![img](https://img.shields.io/npm/v/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/dt/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils)
+[![img](https://img.shields.io/npm/v/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/dt/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/l/arabic-utils.svg)](https://github.com/woofers/arabic-utils/blob/main/LICENSE)
 
 An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, tatweel and more.
 
