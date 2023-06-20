@@ -76,6 +76,26 @@ Example:
 console.log(ArabicString("كتــــــــــــــــاب").removeTatweel()); // "كتاب"
 ```
 
+### getMatches(searchToken: string, matchOptions?: IMatchOptions)
+
+Retrieves the matched parts from the given Arabic text based on the search token.
+
+Example
+
+```javascript
+const input = "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ";
+const token = "النسيم";
+console.log(ArabicString(input).getMatches(token)).
+
+/*
+* Output:
+* [
+*   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
+*   { text: "النَّسيمِ", isMatch: true },
+* ]
+*/
+```
+
 # TODO
 
 - [ ] Consider adding CJS module format support
