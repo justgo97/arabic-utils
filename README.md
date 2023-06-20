@@ -1,5 +1,7 @@
 # arabic-utils
 
+![build](https://github.com/justgo97/arabic-utils/actions/workflows/release_package.yml/badge.svg) [![img](https://img.shields.io/npm/v/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/dt/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/l/arabic-utils.svg)](https://github.com/justgo97/arabic-utils/blob/main/LICENSE)
+
 An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, tatweel and more.
 
 # Instalation
@@ -74,10 +76,34 @@ Example:
 console.log(ArabicString("كتــــــــــــــــاب").removeTatweel()); // "كتاب"
 ```
 
+### getMatches(searchToken: string, matchOptions?: IMatchOptions)
+
+Retrieves the matched parts from the given Arabic text based on the search token.
+
+Example
+
+```javascript
+const input = "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ";
+const token = "النسيم";
+console.log(ArabicString(input).getMatches(token)).
+
+/*
+* Output:
+* [
+*   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
+*   { text: "النَّسيمِ", isMatch: true },
+* ]
+*/
+```
+
 # TODO
 
 - [ ] Consider adding CJS module format support
-- [ ] Add a method to get match results in array format ( useful for the purpose of highlighting and such )
+- [x] ~~Add a method to get match results in array format ( useful for the purpose of highlighting and such )~~
 - [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
 - [ ] Add replace method
 - [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true )
+
+# Contributing
+
+You are welcome to do a pull request or to open an issue for requesting new features or reporting a bug.
