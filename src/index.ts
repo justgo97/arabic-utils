@@ -9,6 +9,7 @@ import {
   defaultNormalizeOptions,
   getMatches,
   IMatchOptions,
+  IMatch,
   normalizeSuperscriptAlef,
   ISuperscriptAlefNormalizeOptions,
   defaultSuperscriptAlefNormalizeOptions,
@@ -213,3 +214,10 @@ export class ArabicClass {
  * @returns {ArabicClass} An instance of the ArabicClass utility.
  */
 export const ArabicString = ArabicClass.createInstance();
+
+export {
+  IMatch,
+  IMatchOptions,
+  INormalizeOptions,
+  ISuperscriptAlefNormalizeOptions,
+};
