@@ -107,3 +107,7 @@ console.log(ArabicString(input).getMatches(token)).
 # Contributing
 
 You are welcome to do a pull request or to open an issue for requesting new features or reporting a bug.
+
+# License
+
+[MIT](LICENSE)
