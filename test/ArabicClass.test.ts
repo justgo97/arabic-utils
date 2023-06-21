@@ -1,4 +1,4 @@
-import ArabicString, { ArabicClass } from "../src/index";
+import { ArabicString, ArabicClass } from "../src/index";
 
 test("returns true", () => {
   ArabicString("").setNormalizeOptions({});

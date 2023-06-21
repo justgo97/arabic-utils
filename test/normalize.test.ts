@@ -1,4 +1,4 @@
-import ArabicString from "../src/index";
+import { ArabicString } from "../src/index";
 
 test("returns expected", () => {
   const input = "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ";

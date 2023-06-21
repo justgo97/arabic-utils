@@ -212,6 +212,4 @@ export class ArabicClass {
  * @param options - Optional: The options to customize the normalization process.
  * @returns {ArabicClass} An instance of the ArabicClass utility.
  */
-const ArabicString = ArabicClass.createInstance();
-
-export default ArabicString;
+export const ArabicString = ArabicClass.createInstance();

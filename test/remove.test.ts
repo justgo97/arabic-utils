@@ -1,4 +1,4 @@
-import ArabicString from "../src/index";
+import { ArabicString } from "../src/index";
 
 test("returns true", () => {
   expect(ArabicString("كتب").remove("كتب") === "").toBe(true);

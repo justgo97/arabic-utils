@@ -11,7 +11,7 @@ An NPM package written in typescript that provides some utilites for handling Ar
 # Usage
 
 ```javascript
-import ArabicString from "arabic-utils";
+import { ArabicString } from "arabic-utils";
 ```
 
 ### removeDiacritics()

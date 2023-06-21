@@ -1,4 +1,4 @@
-import ArabicString from "../src/index";
+import { ArabicString } from "../src/index";
 import { IMatch } from "../src/utilities";
 
 function isEqual(firstArr: IMatch[], secondArr: IMatch[] | false): boolean {
