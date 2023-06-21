@@ -1,6 +1,6 @@
 {
   "name": "arabic-utils",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Utilities for handling Arabic strings such as removing diacritics, tatweel, performing diacriticless search and more.",
   "type": "module",
   "types": "./dist/index.d.ts",
