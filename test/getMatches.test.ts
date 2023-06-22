@@ -283,7 +283,9 @@ test("returns true", () => {
     { text: "هذا ", isMatch: false },
     { text: "الكتــاب", isMatch: true },
   ];
-  const expression = ArabicString(input).getMatches(token);
+  const expression = ArabicString(input, { removeTatweel: true }).getMatches(
+    token
+  );
 
   expect(expression).toStrictEqual(expected);
 });
@@ -309,6 +311,55 @@ test("returns true", () => {
   const expression = ArabicString(input, { normalizeAlef: true }).getMatches(
     token
   );
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("returns true", () => {
+  const input = "أُكْتُبْ كِتَاب مَكْتُوب";
+  const token = "كِتَاب";
+  const expected = [
+    { text: "أُكْتُبْ ", isMatch: false },
+    { text: "كِتَاب", isMatch: true },
+    { text: " مَكْتُوب", isMatch: false },
+  ];
+  const expression = ArabicString(input, {
+    removeDiacritics: false,
+    normalizeAlef: true,
+  }).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("returns true", () => {
+  const input = "أُكْتُبْ كِتَـاب مَكْتُوب";
+  const token = "كِتَاب";
+  const expected = [
+    { text: "أُكْتُبْ ", isMatch: false },
+    { text: "كِتَـاب", isMatch: true },
+    { text: " مَكْتُوب", isMatch: false },
+  ];
+  const expression = ArabicString(input, {
+    removeDiacritics: false,
+    removeTatweel: true,
+    normalizeAlef: true,
+  }).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("returns true", () => {
+  const input = "أُكْتُبْ كِتَـٰب مَكْتُوب";
+  const token = "كِتَاب";
+  const expected = [
+    { text: "أُكْتُبْ ", isMatch: false },
+    { text: "كِتَـٰب", isMatch: true },
+    { text: " مَكْتُوب", isMatch: false },
+  ];
+  const expression = ArabicString(input, {
+    removeDiacritics: false,
+    normalizeSuperscripAlef: true,
+  }).getMatches(token);
 
   expect(expression).toStrictEqual(expected);
 });

@@ -3,7 +3,13 @@ import { ArabicString } from "../src/index";
 test("returns expected", () => {
   const input = "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ";
   const expected = "بسم الله الرحمن الرحيم";
-  expect(ArabicString(input).normalize()).toBe(expected);
+  expect(
+    ArabicString(input).normalize({
+      removeDiacritics: true,
+      removeSuperscriptAlef: true,
+      removeTatweel: true,
+    })
+  ).toBe(expected);
 });
 
 test("returns expected", () => {

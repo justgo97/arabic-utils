@@ -1,18 +1,38 @@
 import { arabicSymbolsArray, arabicDiacriticsArray } from "./arabicSymbols";
 
+interface ISplitOptions {
+  alefTatweelAsLetter: boolean;
+}
+
+const defaultSplitOptions: ISplitOptions = {
+  alefTatweelAsLetter: true,
+};
+
 /**
  * Splits Arabic text into an array of individual letters joining them with their diacritics and extra symbols if any.
  * @param {string} arabicText - The input Arabic text.
+ * @param splitOptions - the split options.
  * @returns {string[]} An array of individual Arabic letters joined with their diacritics and extra symbols if any.
  */
-export function splitArabicLetters(arabicText: string): string[] {
+function splitArabicLetters(
+  arabicText: string,
+  splitOptions: ISplitOptions = defaultSplitOptions
+): string[] {
   const result: string[] = [];
 
-  for (const char of arabicText) {
-    if (arabicSymbolsArray.includes(char) && result.length) {
-      result[result.length - 1] += char;
+  for (let i = 0; i < arabicText.length; i++) {
+    const currentChar = arabicText[i]!;
+
+    const nextChar = i < arabicText.length ? arabicText[i + 1]! : "";
+
+    if (arabicSymbolsArray.includes(currentChar) && result.length) {
+      if (splitOptions.alefTatweelAsLetter && currentChar + nextChar === "ـٰ") {
+        result.push(currentChar);
+      } else {
+        result[result.length - 1] += currentChar;
+      }
     } else {
-      result.push(char);
+      result.push(currentChar);
     }
   }
 
@@ -32,15 +52,17 @@ export function normalizeAlef(arabicText: string): string {
  * Removes an occurrence of a specified text from an Arabic string.
  *
  * @param {string} arabicText - The input Arabic string.
- * @param {string} normalizedText - The input normamized to check the text to remove against.
  * @param {string} textToRemove - The text to be removed from the string.
+ * @param normalizeOptions - Optional: The options to customize the normalization process
  * @returns {string} The modified string with the specified text removed.
  */
 export function removeText(
   arabicText: string,
-  normalizedText: string,
-  textToRemove: string
+  textToRemove: string,
+  normalizeOptions: INormalizeOptions = defaultNormalizeOptions
 ): string {
+  const normalizedText = normalizeArabic(arabicText, normalizeOptions);
+
   // Find the starting index of the text to remove in the normalized text
   const startIdx = normalizedText.indexOf(textToRemove);
 
@@ -51,7 +73,9 @@ export function removeText(
   }
 
   // Split the original Arabic text into separate letters
-  const textSeparated = splitArabicLetters(arabicText);
+  const textSeparated = splitArabicLetters(arabicText, {
+    alefTatweelAsLetter: !normalizeOptions.removeSuperscriptAlef,
+  });
 
   // Remove the specified text from the array using splice
   textSeparated.splice(startIdx, textToRemove.length);
@@ -75,14 +99,30 @@ export function removeDiacritics(arabicText: string): string {
     .join("");
 }
 
+export interface IRemoveTatweelOptions {
+  removeAuxiliairyOnly: boolean;
+}
+
+export const defaultRemoveTatweelOptions: IRemoveTatweelOptions = {
+  removeAuxiliairyOnly: true,
+};
+
 /**
  * Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
  *
  * @param {string} arabicText - The Arabic text string to remove ARABIC TATWEEL characters from.
+ * @param IRemoveTatweelOptions - Specifies tatweel removal options.
  * @returns {string} The modified string with ARABIC TATWEEL characters removed.
  */
-export function removeTatweel(arabicText: string): string {
-  return arabicText.replace(/\u0640/g, "");
+export function removeTatweel(
+  arabicText: string,
+  removeTatweelOptions: IRemoveTatweelOptions = defaultRemoveTatweelOptions
+): string {
+  if (removeTatweelOptions.removeAuxiliairyOnly) {
+    return arabicText.replace(/\u0640(?!\u0670)/g, "");
+  } else {
+    return arabicText.replace(/\u0640/g, "");
+  }
 }
 
 /**
@@ -120,21 +160,7 @@ export function normalizeSuperscriptAlef(
    * it's common to omit Superscript Alefs before ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
    */
   if (superscriptAlefNormalizeOptions.removeAuxiliaryAlefs) {
-    const targetLetters = ["ه", "ل", "ذ", "ى"];
-
-    const splittedString: string[] = splitArabicLetters(arabicText);
-
-    for (let i = 0; i < splittedString.length; i++) {
-      const containsTargetLetter = targetLetters.some((letter) =>
-        splittedString[i]!.includes(letter)
-      );
-
-      if (containsTargetLetter) {
-        splittedString[i] = splittedString[i]!.replace(/[\u0670\u0640]/g, "");
-      }
-    }
-
-    normalizedText = splittedString.join("");
+    normalizedText = arabicText.replace(/(?<=(ه|ذ|ل|ى))(ـٰ|\u0670)/g, "");
   } else {
     normalizedText = arabicText;
   }
@@ -154,7 +180,7 @@ export const defaultNormalizeOptions: INormalizeOptions = {
   normalizeAlef: false,
   normalizeSuperscripAlef: false,
   removeDiacritics: true,
-  removeTatweel: true,
+  removeTatweel: false,
   removeSuperscriptAlef: true,
 };
 
@@ -183,14 +209,15 @@ export function normalizeArabic(
     normalizedText = normalizeAlef(normalizedText);
   }
 
-  if (options.removeTatweel) {
-    normalizedText = removeTatweel(normalizedText);
-  }
-
   if (options.removeSuperscriptAlef) {
     normalizedText = removeSuperscriptAlef(normalizedText);
   } else if (options.normalizeSuperscripAlef) {
     normalizedText = normalizeSuperscriptAlef(normalizedText);
+  }
+
+  // Note: This should be at last, the order of these functions matter!
+  if (options.removeTatweel) {
+    normalizedText = removeTatweel(normalizedText);
   }
 
   return normalizedText;
@@ -258,7 +285,7 @@ export function getMatches(
   normalizeOptions: INormalizeOptions = defaultNormalizeOptions,
   matchOptions: IMatchOptions = defaultMatchOptions
 ) {
-  if (arabicText.trim() === "" || searchToken.trim() === "") return false;
+  if (!arabicText.trim() || !searchToken.trim()) return false;
 
   const normalizedText = normalizeArabic(arabicText, normalizeOptions);
 
@@ -266,12 +293,19 @@ export function getMatches(
     (option) => normalizeOptions[option as keyof INormalizeOptions] === true
   );
 
-  if (
-    matchOptions?.matchIdentical &&
-    !identicalRegex(searchToken).test(normalizedText)
-  ) {
-    return false;
-  } else if (!normalizedText.includes(searchToken)) {
+  const skeletonText =
+    normalizeOptions.removeDiacritics || !hasStringChanged
+      ? normalizedText
+      : normalizeArabic(normalizedText, {
+          ...normalizeOptions,
+          removeDiacritics: true,
+        });
+
+  const isTokenFound = matchOptions?.matchIdentical
+    ? identicalRegex(searchToken).test(normalizedText)
+    : normalizedText.includes(searchToken);
+
+  if (!isTokenFound) {
     return false;
   }
 
@@ -284,13 +318,22 @@ export function getMatches(
 
   const arrayText = splitArabicLetters(arabicText);
 
-  const getOriginalPart = (part: string, traversedLength: number) => {
-    const indexOfPart = normalizedText.indexOf(part, traversedLength);
+  const getOriginalPart = (part: string, traversedLength: [number]) => {
+    const skeletonPart = normalizeArabic(part, {
+      ...normalizeOptions,
+      removeDiacritics: true,
+    });
 
-    return arrayText.slice(indexOfPart, indexOfPart + part.length).join("");
+    const indexOfPart = skeletonText.indexOf(skeletonPart, traversedLength[0]);
+
+    traversedLength[0] += skeletonPart.length;
+
+    return arrayText
+      .slice(indexOfPart, indexOfPart + skeletonPart.length)
+      .join("");
   };
 
-  let traversedLength = 0;
+  const traversedLength: [number] = [0];
 
   const matchParts: IMatch[] = parts.map((part) => {
     const partText = hasStringChanged
@@ -301,8 +344,6 @@ export function getMatches(
       text: partText,
       isMatch: part === searchToken,
     };
-
-    traversedLength += part.length;
 
     return currentPart;
   });

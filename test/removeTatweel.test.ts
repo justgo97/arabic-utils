@@ -5,3 +5,14 @@ test("returns true", () => {
     true
   );
 });
+
+test("returns true", () => {
+  expect(ArabicString("هـٰذا").removeTatweel() === "هـٰذا").toBe(true);
+});
+
+test("returns true", () => {
+  expect(
+    ArabicString("هـٰذا").removeTatweel({ removeAuxiliairyOnly: false }) ===
+      "هٰذا"
+  ).toBe(true);
+});

@@ -26,7 +26,13 @@ test("returns true", () => {
   const input = "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ";
   const token = "الرحمن";
   const expected = "بِسْمِ اللَّهِ  الرَّحِيمِ";
-  expect(ArabicString(input).remove(token)).toBe(expected);
+  expect(
+    ArabicString(input, {
+      removeDiacritics: true,
+      removeSuperscriptAlef: true,
+      removeTatweel: true,
+    }).remove(token)
+  ).toBe(expected);
 });
 
 test("returns true", () => {

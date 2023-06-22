@@ -13,6 +13,8 @@ import {
   normalizeSuperscriptAlef,
   ISuperscriptAlefNormalizeOptions,
   defaultSuperscriptAlefNormalizeOptions,
+  IRemoveTatweelOptions,
+  defaultRemoveTatweelOptions,
 } from "./utilities";
 
 /**
@@ -107,8 +109,12 @@ export class ArabicClass {
    * @returns {string} The original string with the specified text removed.
    */
   remove(textToRemove: string): string {
-    const normalizedText = this.normalize();
-    return removeText(this.text, normalizedText, textToRemove);
+    // See if the there is a temporary option param set
+    const currentOptions = this.tempOptions
+      ? { ...this.tempOptions }
+      : { ...this.options };
+    this.tempOptions = undefined;
+    return removeText(this.text, textToRemove, currentOptions);
   }
 
   /**
@@ -121,11 +127,13 @@ export class ArabicClass {
 
   /**
    * Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
-   *
+   * @param IRemoveTatweelOptions - Specifies tatweel removal options.
    * @returns {string} The modified string with ARABIC TATWEEL characters removed.
    */
-  removeTatweel(): string {
-    return removeTatweel(this.text);
+  removeTatweel(
+    removeTatweelOptions: IRemoveTatweelOptions = defaultRemoveTatweelOptions
+  ): string {
+    return removeTatweel(this.text, removeTatweelOptions);
   }
 
   /**
@@ -220,4 +228,5 @@ export {
   IMatchOptions,
   INormalizeOptions,
   ISuperscriptAlefNormalizeOptions,
+  IRemoveTatweelOptions,
 };

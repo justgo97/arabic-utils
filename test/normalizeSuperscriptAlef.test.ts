@@ -43,5 +43,5 @@ test("returns true", () => {
 });
 
 test("returns true", () => {
-  expect(ArabicCustom("هـٰذا").normalizeSuperscriptAlef() === "هذا").toBe(true);
+  expect(ArabicCustom("هـٰذا").normalizeSuperscriptAlef()).toBe("هذا");
 });
