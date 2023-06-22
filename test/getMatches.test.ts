@@ -275,3 +275,40 @@ test("returns true", () => {
 
   expect(expression).toStrictEqual(expected);
 });
+
+test("returns true", () => {
+  const input = "هذا الكتــاب";
+  const token = "الكتاب";
+  const expected = [
+    { text: "هذا ", isMatch: false },
+    { text: "الكتــاب", isMatch: true },
+  ];
+  const expression = ArabicString(input).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("returns false", () => {
+  const input = "هذا الكتــاب";
+  const token = "الكتاب";
+
+  const expression = ArabicString(input, { removeTatweel: false }).getMatches(
+    token
+  );
+
+  expect(expression).toBe(false);
+});
+
+test("returns true", () => {
+  const input = "أكتب كتاب";
+  const token = "اكتب";
+  const expected = [
+    { text: "أكتب", isMatch: true },
+    { text: " كتاب", isMatch: false },
+  ];
+  const expression = ArabicString(input, { normalizeAlef: true }).getMatches(
+    token
+  );
+
+  expect(expression).toStrictEqual(expected);
+});
