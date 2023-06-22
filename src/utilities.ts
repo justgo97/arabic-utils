@@ -284,16 +284,17 @@ export function getMatches(
 
   const arrayText = splitArabicLetters(arabicText);
 
+  const getOriginalPart = (part: string, traversedLength: number) => {
+    const indexOfPart = normalizedText.indexOf(part, traversedLength);
+
+    return arrayText.slice(indexOfPart, indexOfPart + part.length).join("");
+  };
+
   let traversedLength = 0;
 
   const matchParts: IMatch[] = parts.map((part) => {
     const partText = hasStringChanged
-      ? arrayText
-          .slice(
-            normalizedText.indexOf(part, traversedLength),
-            normalizedText.indexOf(part, traversedLength) + part.length
-          )
-          .join("")
+      ? getOriginalPart(part, traversedLength)
       : part;
 
     const currentPart: IMatch = {
