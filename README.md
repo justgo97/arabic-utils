@@ -2,7 +2,7 @@
 
 [![build](https://github.com/justgo97/arabic-utils/actions/workflows/release_package.yml/badge.svg)](https://github.com/justgo97/arabic-utils/actions) [![img](https://img.shields.io/npm/v/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/dt/arabic-utils.svg)](https://www.npmjs.com/package/arabic-utils) [![img](https://img.shields.io/npm/l/arabic-utils.svg)](https://github.com/justgo97/arabic-utils/blob/main/LICENSE)
 
-An NPM package written in typescript that provides some utilites for handling Arabic strings such as removing diacritics, tatweel and more.
+An NPM package designed for use in both browser and Node environments. It offers a range of convenient utilities specifically tailored for Arabic string manipulation, including functionalities like token search, removing diacritics and more.
 
 # Instalation
 
@@ -12,6 +12,26 @@ An NPM package written in typescript that provides some utilites for handling Ar
 
 ```javascript
 import { ArabicString } from "arabic-utils";
+```
+
+### getMatches(searchToken: string, matchOptions?: IMatchOptions)
+
+Retrieves the matched parts from the given Arabic text based on the search token.
+
+Example:
+
+```javascript
+const input = "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ";
+const token = "النسيم";
+console.log(ArabicString(input).getMatches(token)).
+
+/*
+* Output:
+* [
+*   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
+*   { text: "النَّسيمِ", isMatch: true },
+* ]
+*/
 ```
 
 ### removeDiacritics()
@@ -25,15 +45,14 @@ const normalized = ArabicString("السَّلَامُ عَلَيْكُمُ").rem
 console.log(normalized); // "السلام عليكم"
 ```
 
-### remove(textToRemove: string)
+### removeTatweel()
 
-Removes an occurrence of a specified text from an Arabic string.
+Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
 
 Example:
 
 ```javascript
-const newString = ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام");
-console.log(newString); // " عَلَيْكُمُ"
+console.log(ArabicString("كتــــــــــــــــاب").removeTatweel()); // "كتاب"
 ```
 
 ### includes(searchString: string, position?: number)
@@ -66,34 +85,15 @@ Example:
 console.log(ArabicString("الآن إكتمل الأمل").normalizeAlef()); // "الان اكتمل الامل"
 ```
 
-### removeTatweel()
+### remove(textToRemove: string)
 
-Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
+Removes an occurrence of a specified text from an Arabic string.
 
 Example:
 
 ```javascript
-console.log(ArabicString("كتــــــــــــــــاب").removeTatweel()); // "كتاب"
-```
-
-### getMatches(searchToken: string, matchOptions?: IMatchOptions)
-
-Retrieves the matched parts from the given Arabic text based on the search token.
-
-Example
-
-```javascript
-const input = "خُلقتَ طَليقاً كَطَيفِ النَّسيمِ";
-const token = "النسيم";
-console.log(ArabicString(input).getMatches(token)).
-
-/*
-* Output:
-* [
-*   { text: "خُلقتَ طَليقاً كَطَيفِ ", isMatch: false },
-*   { text: "النَّسيمِ", isMatch: true },
-* ]
-*/
+const newString = ArabicString("السَّلَامُ عَلَيْكُمُ").remove("السلام");
+console.log(newString); // " عَلَيْكُمُ"
 ```
 
 # TODO
