@@ -4,6 +4,8 @@
 
 An NPM package designed for use in both browser and Node environments. It offers a range of convenient utilities specifically tailored for Arabic string manipulation, including functionalities like token search, removing diacritics and more.
 
+⚠️ The library is still under active development make sure to update to the lastest version for bug fixes and improvements
+
 # Instalation
 
 `npm install arabic-utils`
@@ -96,6 +98,8 @@ const newString = ArabicString("السَّلَامُ عَلَيْكُمُ").remo
 console.log(newString); // " عَلَيْكُمُ"
 ```
 
+⚠️ Not all functionalities are outputted here yet. More examples and use cases are in the [test files](/test/)
+
 # TODO
 
 - [x] ~~Consider adding CJS module format support~~
@@ -106,7 +110,7 @@ console.log(newString); // " عَلَيْكُمُ"
 
 # Contributing
 
-You are welcome to do a pull request or to open an issue for requesting new features or reporting a bug.
+You can report any bugs or do pull requests for any kind of improvement.
 
 # License
 
