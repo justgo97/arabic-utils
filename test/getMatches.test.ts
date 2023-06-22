@@ -249,3 +249,29 @@ test("returns true", () => {
 
   expect(expression).toStrictEqual(expected);
 });
+
+test("returns true", () => {
+  const input = "هذا  ( الكتاب )";
+  const token = "هذا  (";
+  const expected = [
+    { text: "هذا  (", isMatch: true },
+    { text: " الكتاب )", isMatch: false },
+  ];
+  const expression = ArabicString(input).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("returns true", () => {
+  const input = "هذا  ( الكتاب )";
+  const token = "هذا  (";
+  const expected = [
+    { text: "هذا  (", isMatch: true },
+    { text: " الكتاب )", isMatch: false },
+  ];
+  const expression = ArabicString(input).getMatches(token, {
+    matchIdentical: true,
+  });
+
+  expect(expression).toStrictEqual(expected);
+});

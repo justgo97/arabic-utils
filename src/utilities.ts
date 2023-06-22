@@ -197,6 +197,15 @@ export function normalizeArabic(
 }
 
 /**
+ * Escapes special characters in a string to be used as a literal in a regular expression pattern.
+ * @param {string} string - The input string to escape.
+ * @returns {string} The escaped string with special characters replaced by their escaped versions.
+ */
+function escapeRegex(string: string): string {
+  return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
+}
+
+/**
  * Creates a regular expression that matches the provided term bounded by whitespace characters or start/end.
  * @param term - The term to match.
  * @returns A regular expression that matches the term bounded by whitespace characters or start/end.
@@ -204,7 +213,7 @@ export function normalizeArabic(
 function identicalRegex(term: string): RegExp {
   const startBoundary = term.charAt(0) === " " ? "" : "(?<=^|\\s)";
   const endBoundary = term.charAt(term.length - 1) === " " ? "" : "(?=\\s|$)";
-  const regexPattern = `(${startBoundary}${term}${endBoundary})`;
+  const regexPattern = `(${startBoundary}${escapeRegex(term)}${endBoundary})`;
 
   return new RegExp(regexPattern);
 }
@@ -267,7 +276,7 @@ export function getMatches(
   // using RegExp with () here because we want to include the searchToken as a separate part in the resulting array.
   const regex = matchOptions?.matchIdentical
     ? identicalRegex(searchToken)
-    : new RegExp(`(${searchToken})`);
+    : new RegExp(`(${escapeRegex(searchToken)})`);
 
   const parts = normalizedText.split(regex).filter((part) => part !== "");
 
