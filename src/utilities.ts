@@ -262,7 +262,9 @@ export function getMatches(
 
   const normalizedText = normalizeArabic(arabicText, normalizeOptions);
 
-  const isDiacriticless = normalizeOptions.removeDiacritics;
+  const hasStringChanged = Object.keys(normalizeOptions).some(
+    (option) => normalizeOptions[option as keyof INormalizeOptions] === true
+  );
 
   if (
     matchOptions?.matchIdentical &&
@@ -285,7 +287,7 @@ export function getMatches(
   let traversedLength = 0;
 
   const matchParts: IMatch[] = parts.map((part) => {
-    const partText = isDiacriticless
+    const partText = hasStringChanged
       ? arrayText
           .slice(
             normalizedText.indexOf(part, traversedLength),
