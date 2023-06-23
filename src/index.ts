@@ -56,13 +56,15 @@ export class ArabicClass {
    */
   normalize(options: INormalizeOptions = this.options): string {
     // See if the there is a temporary option param set
-    const currentOptions = this.tempOptions ? this.tempOptions : options;
-
-    // Get the normalized string with the current options
-    const normalizedText = normalizeArabic(this.text, currentOptions);
+    const currentOptions = this.tempOptions
+      ? { ...this.tempOptions }
+      : { ...options };
 
     // Reset temporary options param
     this.tempOptions = undefined;
+
+    // Get the normalized string with the current options
+    const normalizedText = normalizeArabic(this.text, currentOptions);
 
     // Return the normalized text
     return normalizedText;
