@@ -154,18 +154,14 @@ export function normalizeSuperscriptAlef(
   arabicText: string,
   superscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions = defaultSuperscriptAlefNormalizeOptions
 ): string {
-  let normalizedText = "";
-
   /**
    * it's common to omit Superscript Alefs before ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
    */
   if (superscriptAlefNormalizeOptions.removeAuxiliaryAlefs) {
-    normalizedText = arabicText.replace(/(?<=(ه|ذ|ل|ى))(ـٰ|\u0670)/g, "");
-  } else {
-    normalizedText = arabicText;
+    arabicText = arabicText.replace(/(?<=(ه|ذ|ل|ى))(ـٰ|\u0670)/g, "");
   }
 
-  return normalizedText.replace(/\u0670|ـٰ/g, "ا");
+  return arabicText.replace(/\u0670|ـٰ/g, "ا");
 }
 
 export interface INormalizeOptions {
