@@ -285,22 +285,12 @@ export function getMatches(
   normalizeOptions: INormalizeOptions = defaultNormalizeOptions,
   matchOptions: IMatchOptions = defaultMatchOptions
 ) {
+  // Ignore empty strings from both sides
   if (!arabicText.trim() || !searchToken.trim()) return false;
 
   const normalizedText = normalizeArabic(arabicText, normalizeOptions);
 
-  const hasStringChanged = Object.keys(normalizeOptions).some(
-    (option) => normalizeOptions[option as keyof INormalizeOptions] === true
-  );
-
-  const skeletonText =
-    normalizeOptions.removeDiacritics || !hasStringChanged
-      ? normalizedText
-      : normalizeArabic(normalizedText, {
-          ...normalizeOptions,
-          removeDiacritics: true,
-        });
-
+  // Check whether we can find any matches
   const isTokenFound = matchOptions?.matchIdentical
     ? identicalRegex(searchToken).test(normalizedText)
     : normalizedText.includes(searchToken);
@@ -309,6 +299,20 @@ export function getMatches(
     return false;
   }
 
+  // Check whether or not we have done any normalizations to the text
+  const hasStringChanged = Object.keys(normalizeOptions).some(
+    (option) => normalizeOptions[option as keyof INormalizeOptions] === true
+  );
+
+  // A skeleton text without diacritics will be useful for matching later on
+  const skeletonText =
+    normalizeOptions.removeDiacritics || !hasStringChanged
+      ? normalizedText
+      : normalizeArabic(normalizedText, {
+          ...normalizeOptions,
+          removeDiacritics: true,
+        });
+
   // using RegExp with () here because we want to include the searchToken as a separate part in the resulting array.
   const regex = matchOptions?.matchIdentical
     ? identicalRegex(searchToken)
@@ -316,19 +320,21 @@ export function getMatches(
 
   const parts = normalizedText.split(regex).filter((part) => part !== "");
 
-  const arrayText = splitArabicLetters(arabicText);
+  const splittedLetters = splitArabicLetters(arabicText);
 
   const getOriginalPart = (part: string, traversedLength: [number]) => {
-    const skeletonPart = normalizeArabic(part, {
-      ...normalizeOptions,
-      removeDiacritics: true,
-    });
+    const skeletonPart = normalizeOptions.removeDiacritics
+      ? part
+      : normalizeArabic(part, {
+          ...normalizeOptions,
+          removeDiacritics: true,
+        });
 
     const indexOfPart = skeletonText.indexOf(skeletonPart, traversedLength[0]);
 
     traversedLength[0] += skeletonPart.length;
 
-    return arrayText
+    return splittedLetters
       .slice(indexOfPart, indexOfPart + skeletonPart.length)
       .join("");
   };
