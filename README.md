@@ -6,7 +6,7 @@ An NPM package designed for use in both browser and Node environments. It offers
 
 ⚠️ The library is still under active development make sure to update to the lastest version for bug fixes and improvements
 
-# Instalation
+# Installation
 
 `npm install arabic-utils`
 
@@ -102,11 +102,9 @@ console.log(newString); // " عَلَيْكُمُ"
 
 # TODO
 
-- [x] ~~Consider adding CJS module format support~~
-- [x] ~~Add a method to get match results in array format ( useful for the purpose of highlighting and such )~~
 - [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
 - [ ] Add replace method
-- [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true )
+- [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true but "كَتَبَ" === "كُتب" will be false)
 
 # Contributing
 
