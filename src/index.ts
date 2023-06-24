@@ -215,6 +215,77 @@ export class ArabicClass {
     const newClass = new ArabicClass(text, options);
     return newClass.getInstance.bind(newClass);
   }
+
+  /**
+   * Removes diacritics from the input string.
+   * @param {string} arabicText - The input Arabic text to be modified.
+   * @returns {string} The filtered string without the diacritics.
+   */
+  static removeDiacritics(arabicText: string): string {
+    return removeDiacritics(arabicText);
+  }
+
+  /**
+   * Normalizes the occurrence of the Arabic letters "آ", "إ", and "أ" in the given Arabic text by replacing them with the letter "ا".
+   * @param {string} arabicText - The input Arabic text to be normalized.
+   * @returns {string} The normalized Arabic text with "آ", "إ", and "أ" replaced by "ا".
+   */
+  static normalizeAlef(arabicText: string): string {
+    return normalizeAlef(arabicText);
+  }
+
+  /**
+   * Removes ARABIC TATWEEL characters (U+0640) from an Arabic text string.
+   *
+   * @param {string} arabicText - The Arabic text string to remove ARABIC TATWEEL characters from.
+   * @param IRemoveTatweelOptions - Specifies tatweel removal options.
+   * @returns {string} The modified string with ARABIC TATWEEL characters removed.
+   */
+  static removeTatweel(
+    arabicText: string,
+    removeTatweelOptions: IRemoveTatweelOptions = defaultRemoveTatweelOptions
+  ): string {
+    return removeTatweel(arabicText, removeTatweelOptions);
+  }
+
+  /**
+   * Removes SuperscriptAlef characters (U+0670) from an Arabic text string.
+   *
+   * @param {string} arabicText - The Arabic text string to remove SuperscriptAlef characters from.
+   * @returns {string} The modified string with SuperscriptAlef characters removed.
+   */
+  static removeSuperscriptAlef(arabicText: string): string {
+    return removeSuperscriptAlef(arabicText);
+  }
+
+  /**
+   * Normalizes the Superscript Alef characters.
+   * @param arabicText The input Arabic text to normalize.
+   * @param superscriptAlefNormalizeOptions Specifies Superscript Alef normalize options.
+   * @returns The normalized Arabic text with Superscript Alefs replaced or removed.
+   */
+  static normalizeSuperscriptAlef(
+    arabicText: string,
+    superscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions = defaultSuperscriptAlefNormalizeOptions
+  ): string {
+    return normalizeSuperscriptAlef(
+      arabicText,
+      superscriptAlefNormalizeOptions
+    );
+  }
+
+  /**
+   * Normalize the Arabic text based on the specified options or the default options.
+   * @param {string} arabicText - The input Arabic text to be modified.
+   * @param options - Optional: The options to customize the normalization process.
+   * @returns The normalized Arabic text.
+   */
+  static normalize(
+    arabicText: string,
+    options: INormalizeOptions = defaultNormalizeOptions
+  ): string {
+    return normalizeArabic(arabicText, options);
+  }
 }
 
 /**
