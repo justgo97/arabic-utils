@@ -22,3 +22,35 @@ test("returns false", () => {
   ArabicCustom("", { removeDiacritics: false }).removeDiacritics();
   expect(ArabicCustom("").options.removeDiacritics === false).toBe(false);
 });
+
+test("returns true", () => {
+  expect(ArabicClass.removeDiacritics("كَتّبَ") === "كتب").toBe(true);
+});
+
+test("returns true", () => {
+  expect(
+    ArabicClass.normalize("كِتَـٰبْ", {
+      removeSuperscriptAlef: false,
+      removeDiacritics: true,
+      normalizeSuperscripAlef: true,
+    }) === "كتاب"
+  ).toBe(true);
+});
+
+test("returns true", () => {
+  expect(ArabicClass.removeSuperscriptAlef("هـٰذا") === "هـذا").toBe(true);
+});
+
+test("returns true", () => {
+  expect(ArabicClass.removeTatweel("كتــــــــــــــــاب") === "كتاب").toBe(
+    true
+  );
+});
+
+test("returns true", () => {
+  expect(ArabicClass.normalizeSuperscriptAlef("كتـٰب") === "كتاب").toBe(true);
+});
+
+test("returns true", () => {
+  expect(ArabicClass.normalizeAlef("أكتب") === "اكتب").toBe(true);
+});
