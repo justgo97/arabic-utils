@@ -17,15 +17,14 @@ type IDiacriticSymbols = {
 };
 
 const commonArabicDiacritics: IDiacriticSymbols = {
+  fathatan: { value: "\u064B" }, //  ً fathatan
+  dammatan: { value: "\u064C" }, //  ٌ dammatan
+  kasratan: { value: "\u064D" }, //  ٍ kasratan
+  fatha: { value: "\u064E" }, //  َ fatha
+  damma: { value: "\u064F" }, //  ُ damma
   kasra: { value: "\u0650" }, //  ِ kasra
   shadda: { value: "\u0651" }, //  ّ shadda
   sukun: { value: "\u0652" }, //  ْ sukun
-
-  fathatan: { value: "\u064B" }, //  ً fathatan
-  kasratan: { value: "\u064D" }, //  ٍ kasratan
-  dammatan: { value: "\u064C" }, //  ٌ dammatan
-  fatha: { value: "\u064E" }, //  َ fatha
-  damma: { value: "\u064F" }, //  ُ damma
 };
 
 type ExtraArabicSymbols = "superscriptAlef" | "tatweel";
