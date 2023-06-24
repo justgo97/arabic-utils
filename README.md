@@ -84,7 +84,7 @@ Normalizes the occurrence of the letters "آ", "إ", and "أ" in the given Arabi
 Example:
 
 ```javascript
-console.log(ArabicString("الآن إكتمل الأمل").normalizeAlef()); // "الان اكتمل الامل"
+console.log(ArabicString("الآن").normalizeAlef()); // "الان"
 ```
 
 ### remove(textToRemove: string)
@@ -98,7 +98,42 @@ const newString = ArabicString("السَّلَامُ عَلَيْكُمُ").remo
 console.log(newString); // " عَلَيْكُمُ"
 ```
 
-⚠️ Not all functionalities are outputted here yet. More examples and use cases are in the [test files](/test/)
+### Notes:
+
+Do not nest calls to `ArabicString` in each other it will cause undesired behavior
+
+Example:
+
+```javascript
+import { ArabicString } from "arabic-utils";
+
+// ❌ This is invalid syntax
+const newString = ArabicString("السلام عليكم").remove(
+  ArabicString("السَّلَامُ").removeDiacritics()
+);
+console.log(newString); // ""
+```
+
+```javascript
+import { ArabicString } from "arabic-utils";
+
+// ✅ This is valid
+const normalizedToken = ArabicString("السَّلَامُ").removeDiacritics();
+const newString = ArabicString("السلام عليكم").remove(normalizedToken);
+console.log(newString); // " عليكم"
+```
+
+```javascript
+import { ArabicString, ArabicClass } from "arabic-utils";
+
+// ✅ This is also valid
+const newString = ArabicString("السلام عليكم").remove(
+  ArabicClass.removeDiacritics("السَّلَامُ")
+);
+console.log(newString); // " عليكم"
+```
+
+⚠️ More examples and use cases are in the [test files](/test/)
 
 # TODO
 
