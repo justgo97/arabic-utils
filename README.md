@@ -139,6 +139,8 @@ console.log(newString); // " عليكم"
 
 Demo website to show the main functionalities of the package: [arabic-utils.pages.dev](https://arabic-utils.pages.dev/)
 
+Ps: don't mind the styling I will update it one day 😅
+
 # TODO
 
 - [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
