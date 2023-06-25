@@ -190,7 +190,7 @@ test("returns true", () => {
   ];
   const expression = ArabicString(input).getMatches(token);
 
-  expect(isEqual(expected, expression)).toBe(true);
+  expect(expression).toStrictEqual(expected);
 });
 
 test("returns true", () => {
@@ -360,6 +360,24 @@ test("returns true", () => {
     removeDiacritics: false,
     normalizeSuperscripAlef: true,
   }).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("return true", () => {
+  const input =
+    "هَـٰذَا النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+  const token = "هذا";
+
+  const expected = [
+    { text: "هَـٰذَا", isMatch: true },
+    {
+      text: " النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة",
+      isMatch: false,
+    },
+  ];
+
+  const expression = ArabicString(input).getMatches(token);
 
   expect(expression).toStrictEqual(expected);
 });

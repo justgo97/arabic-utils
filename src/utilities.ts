@@ -1,4 +1,8 @@
-import { arabicSymbolsArray, arabicDiacriticsArray } from "./arabicSymbols";
+import {
+  arabicSymbolsArray,
+  arabicDiacriticsArray,
+  validArabicLetters,
+} from "./arabicSymbols";
 
 interface ISplitOptions {
   alefTatweelAsLetter: boolean;
@@ -14,19 +18,29 @@ const defaultSplitOptions: ISplitOptions = {
  * @param splitOptions - the split options.
  * @returns {string[]} An array of individual Arabic letters joined with their diacritics and extra symbols if any.
  */
-function splitArabicLetters(
+export function splitArabicLetters(
   arabicText: string,
   splitOptions: ISplitOptions = defaultSplitOptions
 ): string[] {
   const result: string[] = [];
+  let lastLetter = "";
+  const targetLetters = ["ه", "ل", "ذ", "ى"];
 
   for (let i = 0; i < arabicText.length; i++) {
     const currentChar = arabicText[i]!;
 
+    if (validArabicLetters.includes(currentChar)) {
+      lastLetter = currentChar;
+    }
+
     const nextChar = i < arabicText.length ? arabicText[i + 1]! : "";
 
     if (arabicSymbolsArray.includes(currentChar) && result.length) {
-      if (splitOptions.alefTatweelAsLetter && currentChar + nextChar === "ـٰ") {
+      if (
+        splitOptions.alefTatweelAsLetter &&
+        !targetLetters.includes(lastLetter) &&
+        currentChar + nextChar === "ـٰ"
+      ) {
         result.push(currentChar);
       } else {
         result[result.length - 1] += currentChar;
@@ -76,6 +90,15 @@ export function removeText(
   const textSeparated = splitArabicLetters(arabicText, {
     alefTatweelAsLetter: !normalizeOptions.removeSuperscriptAlef,
   });
+
+  /*
+  // Maybe should be
+  const textSeparated = splitArabicLetters(arabicText, {
+    alefTatweelAsLetter: normalizeOptions.normalizeSuperscripAlef
+      ? true
+      : false,
+  });
+  */
 
   // Remove the specified text from the array using splice
   textSeparated.splice(startIdx, textToRemove.length);
@@ -158,7 +181,27 @@ export function normalizeSuperscriptAlef(
    * it's common to omit Superscript Alefs before ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
    */
   if (superscriptAlefNormalizeOptions.removeAuxiliaryAlefs) {
-    arabicText = arabicText.replace(/(?<=(ه|ذ|ل|ى))(ـٰ|\u0670)/g, "");
+    const result: string[] = [];
+    const splittedText = splitArabicLetters(arabicText);
+
+    for (let i = 0; i < splittedText.length; i++) {
+      let currentLetter = splittedText[i]!;
+      const prevLetter = i ? splittedText[i - 1]! : "";
+
+      if (currentLetter.match(/[هذلى]/)) {
+        currentLetter = currentLetter.replace(/\u0670|ـٰ/g, "");
+      }
+
+      if (prevLetter.match(/[هذلى]/)) {
+        if (currentLetter.match(/ـٰ|\u0670/)) {
+          continue;
+        }
+      }
+
+      result.push(currentLetter);
+    }
+
+    arabicText = result.join("");
   }
 
   return arabicText.replace(/\u0670|ـٰ/g, "ا");
@@ -174,10 +217,10 @@ export interface INormalizeOptions {
 
 export const defaultNormalizeOptions: INormalizeOptions = {
   normalizeAlef: false,
-  normalizeSuperscripAlef: false,
+  normalizeSuperscripAlef: true,
   removeDiacritics: true,
   removeTatweel: false,
-  removeSuperscriptAlef: true,
+  removeSuperscriptAlef: false,
 };
 
 /**

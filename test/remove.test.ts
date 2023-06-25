@@ -42,3 +42,36 @@ test("returns true", () => {
 test("returns true", () => {
   expect(ArabicString("كتب كتاب.").remove("كتاب")).toBe("كتب .");
 });
+
+test("return true", () => {
+  const input =
+    "هَـٰذَا النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+  const token = "هذا";
+
+  const expected =
+    " النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+
+  const expression = ArabicString(input, {
+    removeDiacritics: true,
+    normalizeSuperscripAlef: true,
+  }).remove(token);
+
+  expect(expression).toBe(expected);
+});
+
+test("return true", () => {
+  const input =
+    "هَـٰذَا النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+  const token = "هذا";
+
+  const expected =
+    " النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+
+  const expression = ArabicString(input, {
+    removeDiacritics: true,
+    removeSuperscriptAlef: true,
+    removeTatweel: true,
+  }).remove(token);
+
+  expect(expression).toBe(expected);
+});

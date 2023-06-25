@@ -19,7 +19,7 @@ test("returns true", () => {
 });
 
 test("returns true", () => {
-  expect(ArabicCustom("مضىٰ").normalizeSuperscriptAlef() === "مضى").toBe(true);
+  expect(ArabicCustom("مضىٰ").normalizeSuperscriptAlef()).toBe("مضى");
 });
 
 test("returns true", () => {
