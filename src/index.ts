@@ -15,6 +15,9 @@ import {
   defaultSuperscriptAlefNormalizeOptions,
   IRemoveTatweelOptions,
   defaultRemoveTatweelOptions,
+  IEqualityOptions,
+  defaultEqualityOptions,
+  isEqual,
 } from "./utilities";
 
 /**
@@ -185,6 +188,23 @@ export class ArabicClass {
       : { ...this.options };
     this.tempOptions = undefined;
     return getMatches(this.text, searchToken, currentOptions, matchOptions);
+  }
+
+  /**
+   * Checks if two strings are equal based on the specified equality options.
+   * @param {string} token - The second string to compare.
+   * @param {IEqualityOptions} equalityOptions - The equality options to apply during comparison.
+   * @returns {boolean} `true` if the strings are equal based on the specified options, `false` otherwise.
+   */
+  isEqual(
+    token: string,
+    equalityOptions: IEqualityOptions = defaultEqualityOptions
+  ): boolean {
+    const currentOptions = this.tempOptions
+      ? { ...this.tempOptions }
+      : { ...this.options };
+    this.tempOptions = undefined;
+    return isEqual(this.text, token, equalityOptions, currentOptions);
   }
 
   /**

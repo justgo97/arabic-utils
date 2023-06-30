@@ -1,7 +1,7 @@
 import {
   arabicSymbolsArray,
-  arabicDiacriticsArray,
   validArabicLetters,
+  commonArabicDiacriticsRegex,
 } from "./arabicSymbols";
 
 interface ISplitOptions {
@@ -54,12 +54,12 @@ export function splitArabicLetters(
 }
 
 /**
- * Normalizes the occurrence of the Arabic letters "آ", "إ", and "أ" in the given Arabic text by replacing them with the letter "ا".
+ * Normalizes the occurrence of the Arabic letters "آ", "إ", "ٱ", and "أ" in the given Arabic text by replacing them with the letter "ا".
  * @param {string} arabicText - The input Arabic text to be normalized.
- * @returns {string} The normalized Arabic text with "آ", "إ", and "أ" replaced by "ا".
+ * @returns {string} The normalized Arabic text with "آ", "إ", "ٱ", and "أ" replaced by "ا".
  */
 export function normalizeAlef(arabicText: string): string {
-  return arabicText.replace(/(آ|إ|أ)/g, "ا");
+  return arabicText.replace(/(آ|إ|أ|ٱ)/g, "ا");
 }
 
 /**
@@ -116,10 +116,7 @@ export function removeText(
  * @returns {string} The filtered string without the diacritics.
  */
 export function removeDiacritics(arabicText: string): string {
-  return arabicText
-    .split("")
-    .filter((char) => !arabicDiacriticsArray.includes(char))
-    .join("");
+  return arabicText.replace(commonArabicDiacriticsRegex, "");
 }
 
 export interface IRemoveTatweelOptions {
@@ -188,12 +185,13 @@ export function normalizeSuperscriptAlef(
       let currentLetter = splittedText[i]!;
       const prevLetter = i ? splittedText[i - 1]! : "";
 
-      if (currentLetter.match(/[هذلى]/)) {
+      if (/[هذلى]/.test(currentLetter)) {
         currentLetter = currentLetter.replace(/\u0670|ـٰ/g, "");
       }
 
-      if (prevLetter.match(/[هذلى]/)) {
-        if (currentLetter.match(/ـٰ|\u0670/)) {
+      // Check if the previous letter is from ["ه", "ل", "ذ", "ى"] and ignore adding current letter to the result string
+      if (/[هذلى]/.test(prevLetter)) {
+        if (/ـٰ|\u0670/.test(currentLetter)) {
           continue;
         }
       }
@@ -219,7 +217,7 @@ export const defaultNormalizeOptions: INormalizeOptions = {
   normalizeAlef: false,
   normalizeSuperscripAlef: true,
   removeDiacritics: true,
-  removeTatweel: false,
+  removeTatweel: true,
   removeSuperscriptAlef: false,
 };
 
@@ -394,4 +392,94 @@ export function getMatches(
   });
 
   return matchParts;
+}
+
+export interface IEqualityOptions {
+  ignoreDiacritics?: boolean;
+  partialDiacritics?: boolean;
+}
+
+export const defaultEqualityOptions: IEqualityOptions = {
+  ignoreDiacritics: true,
+  partialDiacritics: false,
+};
+
+/**
+ * Checks if two strings are equal based on the specified equality options.
+ * @param {string} text - The first string to compare.
+ * @param {string} token - The second string to compare.
+ * @param {IEqualityOptions} equalityOptions - The equality options to apply during comparison.
+ * @param {INormalizeOptions} normalizeOptions - The normalization options to apply to the strings.
+ * @returns {boolean} `true` if the strings are equal based on the specified options, `false` otherwise.
+ */
+export function isEqual(
+  text: string,
+  token: string,
+  equalityOptions: IEqualityOptions = defaultEqualityOptions,
+  normalizeOptions: INormalizeOptions = defaultNormalizeOptions
+): boolean {
+  // Validate input
+  if (!text || !token) {
+    return false;
+  }
+
+  // Helper function to split and normalize Arabic letters
+  function splitAndNormalize(input: string, removeDiacritics: boolean) {
+    const normalizedInput = normalizeArabic(input, {
+      ...normalizeOptions,
+      removeDiacritics,
+    });
+    return splitArabicLetters(normalizedInput);
+  }
+
+  if (equalityOptions.partialDiacritics) {
+    const splitText = splitAndNormalize(text, false);
+    const splitToken = splitAndNormalize(token, false);
+
+    // Shouldn't happen but just to be safe
+    if (splitText.length !== splitToken.length) {
+      return false;
+    }
+
+    for (let i = 0; i < splitText.length; i++) {
+      const textLetter = splitText[i]!;
+      const tokenLetter = splitToken[i]!;
+
+      // If it's a diacriticless letter
+      if (tokenLetter.length === 1) {
+        continue;
+      }
+
+      // Check If the token has extra diacritics than the text (the other case is okay)
+      if (tokenLetter.length > textLetter.length) {
+        return false;
+      }
+
+      const splitTextLetter = textLetter.split("");
+      const splitTokenLetter = tokenLetter.split("");
+
+      // Check against the available diacritics
+      for (let j = 0; j < splitTokenLetter.length; j++) {
+        if (splitTokenLetter[j] !== splitTextLetter[j]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  } else if (equalityOptions.ignoreDiacritics) {
+    const normalizedText = normalizeArabic(text, {
+      ...normalizeOptions,
+      removeDiacritics: true,
+    });
+
+    const normalizedToken = normalizeArabic(token, {
+      ...normalizeOptions,
+      removeDiacritics: true,
+    });
+
+    return normalizedText === normalizedToken;
+  }
+
+  return text === token;
 }

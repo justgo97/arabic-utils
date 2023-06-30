@@ -89,3 +89,6 @@ const extraSymbolsArray = Object.values(extraArabicSymbols).map(
 export const arabicSymbolsArray = Object.values(commonArabicDiacritics)
   .map((symbol) => symbol.value)
   .concat(extraSymbolsArray);
+
+// include the symbols in commonArabicDiacritics ( using this for better performance )
+export const commonArabicDiacriticsRegex = /[\u064B-\u0652]/g;
