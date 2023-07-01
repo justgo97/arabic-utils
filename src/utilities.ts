@@ -423,6 +423,21 @@ export function isEqual(
     return false;
   }
 
+  const normalizedText = normalizeArabic(text, {
+    ...normalizeOptions,
+    removeDiacritics: true,
+  });
+
+  const normalizedToken = normalizeArabic(token, {
+    ...normalizeOptions,
+    removeDiacritics: true,
+  });
+
+  // Sekeltons do not much just return false
+  if (normalizedText !== normalizedToken) {
+    return false;
+  }
+
   // Helper function to split and normalize Arabic letters
   function splitAndNormalize(input: string, removeDiacritics: boolean) {
     const normalizedInput = normalizeArabic(input, {
@@ -468,17 +483,7 @@ export function isEqual(
 
     return true;
   } else if (equalityOptions.ignoreDiacritics) {
-    const normalizedText = normalizeArabic(text, {
-      ...normalizeOptions,
-      removeDiacritics: true,
-    });
-
-    const normalizedToken = normalizeArabic(token, {
-      ...normalizeOptions,
-      removeDiacritics: true,
-    });
-
-    return normalizedText === normalizedToken;
+    return true;
   }
 
   return text === token;

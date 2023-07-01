@@ -38,8 +38,14 @@ test("returns true", () => {
   ).toBe(true);
 });
 
-test("returns true", () => {
+test("returns false", () => {
   expect(
     ArabicString("رَكَّبَ").isEqual("ركِّب", { partialDiacritics: true })
   ).toBe(false);
+});
+
+test("returns false", () => {
+  expect(ArabicString("كتب").isEqual("ركب", { partialDiacritics: true })).toBe(
+    false
+  );
 });
