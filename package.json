@@ -2,20 +2,13 @@
   "name": "arabic-utils",
   "version": "5.0.1",
   "description": "Utilities for handling Arabic strings such as removing diacritics, tatweel, performing token based search and more.",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
-  "main": "./dist/index.cjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "exports": {
     ".": {
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "files": [
@@ -49,7 +42,7 @@
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
-    "tsup": "^7.0.0",
+    "tsup": "^7.1.0",
     "typescript": "^5.1.3"
   }
 }
