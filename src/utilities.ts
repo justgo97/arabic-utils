@@ -175,10 +175,10 @@ export function normalizeSuperscriptAlef(
   superscriptAlefNormalizeOptions: ISuperscriptAlefNormalizeOptions = defaultSuperscriptAlefNormalizeOptions
 ): string {
   /**
-   * it's common to omit Superscript Alefs before ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
+   * it's common to omit Superscript Alefs after ["ه", "ل", "ذ", "ى"] since we never write "هاذا" and only "هذا" is the standard usage
    */
   if (superscriptAlefNormalizeOptions.removeAuxiliaryAlefs) {
-    const result: string[] = [];
+    let result: string = "";
     const splittedText = splitArabicLetters(arabicText);
 
     for (let i = 0; i < splittedText.length; i++) {
@@ -196,10 +196,10 @@ export function normalizeSuperscriptAlef(
         }
       }
 
-      result.push(currentLetter);
+      result += currentLetter;
     }
 
-    arabicText = result.join("");
+    arabicText = result;
   }
 
   return arabicText.replace(/\u0670|ـٰ/g, "ا");
