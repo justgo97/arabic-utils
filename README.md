@@ -143,8 +143,8 @@ Ps: don't mind the styling I will update it one day 😅
 
 # TODO
 
-- [ ] Add option to remove extra symbols that could exist in various texts in the normalize method
-- [ ] Add replace method
+- [x] ~~~Add option to remove extra symbols that could exist in various texts in the normalize method~~~
+- [x] ~~~Add replace method~~~
 - [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true but "كَتَبَ" === "كُتب" will be false)
 
 # Contributing
