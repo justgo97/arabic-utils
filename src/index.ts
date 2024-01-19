@@ -18,6 +18,8 @@ import {
   IEqualityOptions,
   defaultEqualityOptions,
   isEqual,
+  replaceText,
+  stripNonLetters,
 } from "./utilities";
 
 /**
@@ -208,6 +210,27 @@ export class ArabicClass {
   }
 
   /**
+   * Removes any non valid Arabic letters from a string. this will remove diacritics, signs, numbers and foreign letters.
+   * @returns {string} The new string with only valid Arabic letters.
+   */
+  stripNonLetters(): string {
+    return stripNonLetters(this.text);
+  }
+
+  /**
+   * Replaces text in a string, using a search string.
+   * @param searchValue A string to search for.
+   * @param replaceValue A string containing the text to replace.
+   */
+  replace(searchValue: string, replaceValue: string): string {
+    const currentOptions = this.tempOptions
+      ? { ...this.tempOptions }
+      : { ...this.options };
+    this.tempOptions = undefined;
+    return replaceText(this.text, searchValue, replaceValue, currentOptions);
+  }
+
+  /**
    * Factory function for returning an instance of the ArabicClass utility.
    * @param {string} text - The Arabic text to work with.
    * @param options - Optional: The options to customize the normalization process.
@@ -305,6 +328,31 @@ export class ArabicClass {
     options: INormalizeOptions = defaultNormalizeOptions
   ): string {
     return normalizeArabic(arabicText, options);
+  }
+
+  /**
+   * Removes any non valid Arabic letters from a string.
+   * @param {string} text - The text to process.
+   * @returns {string} The new string with only valid Arabic letters.
+   */
+  static stripNonLetters(text: string): string {
+    return stripNonLetters(text);
+  }
+
+  /**
+   * Replaces text in a string, using a search string.
+   * @param text A string to conduct the search.
+   * @param searchValue A string to search for.
+   * @param replaceValue A string containing the text to replace.
+   * @param {INormalizeOptions} normalizeOptions - The normalization options to apply to the strings.
+   */
+  static replace(
+    text: string,
+    searchValue: string,
+    replaceValue: string,
+    normalizeOptions: INormalizeOptions = defaultNormalizeOptions
+  ): string {
+    return replaceText(text, searchValue, replaceValue, normalizeOptions);
   }
 }
 

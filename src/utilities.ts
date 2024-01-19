@@ -369,6 +369,8 @@ export function getMatches(
 
     const indexOfPart = skeletonText.indexOf(skeletonPart, traversedLength[0]);
 
+    // Note: An alternative is to do traversedLength[0] = indexOfPart + skeletonPart.length;
+    // But since it's guranteed in the current approach that we will iterate through the whole string the current method will work just fine
     traversedLength[0] += skeletonPart.length;
 
     return splittedLetters
@@ -487,4 +489,70 @@ export function isEqual(
   }
 
   return text === token;
+}
+
+/**
+ * Removes any non valid Arabic letters from a string.
+ * @param {string} text - The text to process.
+ * @returns {string} The new string with only valid Arabic letters.
+ */
+export function stripNonLetters(text: string): string {
+  return text
+    .split("")
+    .filter((char) => validArabicLetters.includes(char) || char === " ")
+    .join("");
+}
+
+/**
+ * Replaces text in a string, using a search string.
+ * @param text A string to conduct the search.
+ * @param searchValue A string to search for.
+ * @param replaceValue A string containing the text to replace.
+ * @param {INormalizeOptions} normalizeOptions - The normalization options to apply to the strings.
+ */
+export function replaceText(
+  text: string,
+  searchValue: string,
+  replaceValue: string,
+  normalizeOptions: INormalizeOptions = defaultNormalizeOptions
+): string {
+  if (text.includes(searchValue)) {
+    return text.replace(searchValue, replaceValue);
+  }
+
+  const normalizedText = normalizeArabic(text, normalizeOptions);
+  const normalizedToken = normalizeArabic(searchValue, normalizeOptions);
+
+  if (!normalizedText.includes(normalizedToken)) {
+    // No match is found therefor nothing to replace.
+    return text;
+  }
+
+  const parts = normalizedText
+    .split(new RegExp(`(${escapeRegex(normalizedToken)})`))
+    .filter((part) => part !== "");
+
+  // TODO: Update the splitArabicLetters function to take normalizeOptions as input and split the letters relatively
+  const splittedLetters = splitArabicLetters(text, {
+    alefTatweelAsLetter: !normalizeOptions.removeSuperscriptAlef,
+  });
+
+  let traversedLength = 0;
+
+  parts.map((part) => {
+    if (part === normalizedToken) {
+      const indexOfPart = normalizedText.indexOf(part, traversedLength);
+
+      if (indexOfPart !== -1) {
+        traversedLength = indexOfPart + part.length;
+        splittedLetters[indexOfPart] = replaceValue;
+
+        for (let i = 1; i < part.length; i++) {
+          splittedLetters[indexOfPart + i] = "";
+        }
+      }
+    }
+  });
+
+  return splittedLetters.join("");
 }

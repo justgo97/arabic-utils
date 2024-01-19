@@ -381,3 +381,36 @@ test("return true", () => {
 
   expect(expression).toStrictEqual(expected);
 });
+
+test("return true", () => {
+  const input =
+    "هَـٰذَا النص يحاكي أنماط كتابة مختلفة وفيه كلمات مٌشَكَّلَة وغير مشكّلة، وكلمات قصيرة وطويــــــــــلة";
+  const token = "مشكلة";
+
+  const expected = [
+    {
+      text: "هَـٰذَا النص يحاكي أنماط كتابة مختلفة وفيه كلمات ",
+      isMatch: false,
+    },
+    {
+      text: "مٌشَكَّلَة",
+      isMatch: true,
+    },
+    {
+      text: " وغير ",
+      isMatch: false,
+    },
+    {
+      text: "مشكّلة",
+      isMatch: true,
+    },
+    {
+      text: "، وكلمات قصيرة وطويــــــــــلة",
+      isMatch: false,
+    },
+  ];
+
+  const expression = ArabicString(input).getMatches(token);
+
+  expect(expression).toStrictEqual(expected);
+});
