@@ -1,5 +1,6 @@
 export const validArabicLetters = [
   "ا",
+  "ٱ",
   "أ",
   "إ",
   "آ",
