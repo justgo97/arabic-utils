@@ -302,7 +302,7 @@ export const defaultMatchOptions: IMatchOptions = {
  * Retrieves the matched parts from the given Arabic text based on the search token.
  * @param arabicText - The Arabic text to search in.
  * @param searchToken - The token to search for.
- * @param normalizeOptions - The options for text normalization (default: defaultOptions).
+ * @param normalizeOptions - The options for text normalization (default: defaultNormalizeOptions).
  * @param matchOptions - The options for matching (default: defaultMatchOptions).
  * @returns An array of matched parts as IMatch objects. If no matches are found, returns false.
  *
@@ -533,15 +533,14 @@ export function replaceText(
   }
 
   const normalizedText = normalizeArabic(text, normalizeOptions);
-  const normalizedToken = normalizeArabic(searchValue, normalizeOptions);
 
-  if (!normalizedText.includes(normalizedToken)) {
+  if (!normalizedText.includes(searchValue)) {
     // No match is found therefor nothing to replace.
     return text;
   }
 
   const parts = normalizedText
-    .split(new RegExp(`(${escapeRegex(normalizedToken)})`))
+    .split(new RegExp(`(${escapeRegex(searchValue)})`))
     .filter((part) => part !== "");
 
   // TODO: Investigate if the splitArabicLetters function need to take normalizeOptions as input and split the letters relatively
@@ -552,7 +551,7 @@ export function replaceText(
   let traversedLength = 0;
 
   parts.map((part) => {
-    if (part === normalizedToken) {
+    if (part === searchValue) {
       const indexOfPart = normalizedText.indexOf(part, traversedLength);
 
       if (indexOfPart !== -1) {
