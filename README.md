@@ -4,8 +4,6 @@
 
 An NPM package designed for use in both browser and Node environments. It offers a range of convenient utilities specifically tailored for Arabic string manipulation, including functionalities like token search, removing diacritics and more.
 
-⚠️ The library is still under active development make sure to update to the lastest version for bug fixes and improvements
-
 # Installation
 
 `npm install arabic-utils`
@@ -143,9 +141,7 @@ Ps: don't mind the styling I will update it one day 😅
 
 # TODO
 
-- [x] ~~~Add option to remove extra symbols that could exist in various texts in the normalize method~~~
-- [x] ~~~Add replace method~~~
-- [ ] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true but "كَتَبَ" === "كُتب" will be false)
+- [x] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true but "كَتَبَ" === "كُتب" will be false)
 
 # Contributing
 
