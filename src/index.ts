@@ -20,6 +20,7 @@ import {
   isEqual,
   replaceText,
   stripNonLetters,
+  defaultMatchOptions,
 } from "./utilities";
 
 /**
@@ -183,7 +184,7 @@ export class ArabicClass {
    *   { text: "النَّسيمِ", isMatch: true },
    * ]
    */
-  getMatches(searchToken: string, matchOptions?: IMatchOptions) {
+  getMatches(searchToken: string, matchOptions: IMatchOptions = defaultMatchOptions) {
     // See if the there is a temporary option param set
     const currentOptions = this.tempOptions
       ? { ...this.tempOptions }

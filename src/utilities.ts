@@ -93,6 +93,7 @@ export function removeText(
 
   /*
   // Maybe should be
+  // TODO: investigate this further
   const textSeparated = splitArabicLetters(arabicText, {
     alefTatweelAsLetter: normalizeOptions.normalizeSuperscripAlef
       ? true
@@ -289,10 +290,12 @@ export interface IMatch {
 
 export interface IMatchOptions {
   matchIdentical?: boolean;
+  partialDiacritics?: boolean;
 }
 
-const defaultMatchOptions: IMatchOptions = {
+export const defaultMatchOptions: IMatchOptions = {
   matchIdentical: false,
+  partialDiacritics: false,
 };
 
 /**
@@ -326,11 +329,12 @@ export function getMatches(
   if (!arabicText.trim() || !searchToken.trim()) return false;
 
   const normalizedText = normalizeArabic(arabicText, normalizeOptions);
+  const processedToken = matchOptions.partialDiacritics ? normalizeArabic(searchToken, normalizeOptions) : searchToken;
 
   // Check whether we can find any matches
-  const isTokenFound = matchOptions?.matchIdentical
-    ? identicalRegex(searchToken).test(normalizedText)
-    : normalizedText.includes(searchToken);
+  const isTokenFound = matchOptions.matchIdentical
+    ? identicalRegex(processedToken).test(normalizedText)
+    : normalizedText.includes(processedToken);
 
   if (!isTokenFound) {
     return false;
@@ -352,8 +356,8 @@ export function getMatches(
 
   // using RegExp with () here because we want to include the searchToken as a separate part in the resulting array.
   const regex = matchOptions?.matchIdentical
-    ? identicalRegex(searchToken)
-    : new RegExp(`(${escapeRegex(searchToken)})`);
+    ? identicalRegex(processedToken)
+    : new RegExp(`(${escapeRegex(processedToken)})`);
 
   const parts = normalizedText.split(regex).filter((part) => part !== "");
 
@@ -385,15 +389,23 @@ export function getMatches(
       ? getOriginalPart(part, traversedLength)
       : part;
 
+    let isMatch: boolean = false;
+
+    if (matchOptions.partialDiacritics) {
+      isMatch = isEqual(partText, searchToken, {ignoreDiacritics: false, partialDiacritics: true})
+    } else {
+      isMatch = part === searchToken;
+    }
+
     const currentPart: IMatch = {
       text: partText,
-      isMatch: part === searchToken,
+      isMatch,
     };
 
     return currentPart;
   });
 
-  return matchParts;
+  return matchParts.filter((part) => part.isMatch === true).length ? matchParts: false;
 }
 
 export interface IEqualityOptions {
@@ -532,7 +544,7 @@ export function replaceText(
     .split(new RegExp(`(${escapeRegex(normalizedToken)})`))
     .filter((part) => part !== "");
 
-  // TODO: Update the splitArabicLetters function to take normalizeOptions as input and split the letters relatively
+  // TODO: Investigate if the splitArabicLetters function need to take normalizeOptions as input and split the letters relatively
   const splittedLetters = splitArabicLetters(text, {
     alefTatweelAsLetter: !normalizeOptions.removeSuperscriptAlef,
   });
