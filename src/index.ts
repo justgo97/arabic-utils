@@ -34,10 +34,9 @@ export class ArabicClass {
   tempOptions: INormalizeOptions | undefined;
 
   /**
-   * Create an instance of the ArabicClass utility.
+   * the constructor of ArabicClass utility.
    * @param text - The Arabic text to work with.
    * @param options - Optional: The options to customize the normalization process.
-   * @returns {ArabicClass} An instance of the ArabicClass utility.
    */
   constructor(text: string, options?: INormalizeOptions) {
     this.text = text;
@@ -354,6 +353,22 @@ export class ArabicClass {
     normalizeOptions: INormalizeOptions = defaultNormalizeOptions
   ): string {
     return replaceText(text, searchValue, replaceValue, normalizeOptions);
+  }
+
+  /**
+   * Removes an occurrence of a specified text from an Arabic string.
+   * The text is normalized by extracting Arabic letters before removing the specified text but the returned text will be identical to the original.
+   *
+   * @param {string} arabicText - The input Arabic string.
+   * @param {string} textToRemove - The text to be removed from the string.
+   * @param normalizeOptions - Optional: The options to customize the normalization process
+   * @returns {string} The original string with the specified text removed.
+   */
+  static remove(arabicText: string,
+    textToRemove: string,
+    normalizeOptions: INormalizeOptions = defaultNormalizeOptions): string {
+
+    return removeText(arabicText, textToRemove, normalizeOptions);
   }
 }
 
