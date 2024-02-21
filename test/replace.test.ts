@@ -77,3 +77,12 @@ test("return true", () => {
 test("returns true", () => {
   expect(ArabicString("كلمة").replace("كلمة", "")).toBe("");
 });
+
+test("returns true", () => {
+  expect(ArabicString("كلمة").replace("كَلمة", "")).toBe("كلمة");
+});
+
+test("returns true", () => {
+  const token = ArabicString("كَلمة").normalize();
+  expect(ArabicString("كلمة").replace(token, "")).toBe("");
+});

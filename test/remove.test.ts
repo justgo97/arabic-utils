@@ -80,3 +80,12 @@ test("return true", () => {
 test("returns true", () => {
   expect(ArabicString("هَـٰذَا").remove("هذا")).toBe("");
 });
+
+test("returns true", () => {
+  expect(ArabicString("كتب").remove("كَتب")).toBe("كتب");
+});
+
+test("returns true", () => {
+  const token = ArabicString("كَتب").normalize();
+  expect(ArabicString("كتب").remove(token)).toBe("");
+});
