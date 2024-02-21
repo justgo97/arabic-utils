@@ -1,6 +1,6 @@
 {
   "name": "arabic-utils",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Utilities for handling Arabic strings such as removing diacritics, tatweel, performing token based search and more.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
