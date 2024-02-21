@@ -414,3 +414,123 @@ test("return true", () => {
 
   expect(expression).toStrictEqual(expected);
 });
+
+test("return true", () => {
+  const input = "كَتب كَتَب كَتَبَ كُتب"
+  const token = "كَتب";
+
+  const expected = [
+    {
+      text: "كَتب",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَب",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَبَ",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كُتب",
+      isMatch: false,
+    },
+  ];
+
+  const expression = ArabicString(input).getMatches(token, {partialDiacritics: true});
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("return true", () => {
+  const input = "كَتب كَتَب كَتَبَ كُتب"
+  const token = "كَتَب";
+
+  const expected = [
+    {
+      text: "كَتب",
+      isMatch: false,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَب",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَبَ",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كُتب",
+      isMatch: false,
+    },
+  ];
+
+  const expression = ArabicString(input).getMatches(token, {partialDiacritics: true});
+
+  expect(expression).toStrictEqual(expected);
+});
+
+test("return true", () => {
+  const input = "كَتب كَتَب كَتَبَ كُتب"
+  const token = "كَتَبَ";
+
+  const expected = [
+    {
+      text: "كَتب",
+      isMatch: false,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَب",
+      isMatch: false,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كَتَبَ",
+      isMatch: true,
+    },
+    {
+      text: " ",
+      isMatch: false,
+    },
+    {
+      text: "كُتب",
+      isMatch: false,
+    },
+  ];
+
+  const expression = ArabicString(input).getMatches(token, {partialDiacritics: true});
+
+  expect(expression).toStrictEqual(expected);
+});

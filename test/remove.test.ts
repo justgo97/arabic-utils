@@ -75,3 +75,8 @@ test("return true", () => {
 
   expect(expression).toBe(expected);
 });
+
+
+test("returns true", () => {
+  expect(ArabicString("هَـٰذَا").remove("هذا")).toBe("");
+});
