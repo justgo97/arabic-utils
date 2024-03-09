@@ -140,6 +140,7 @@ export function removeTatweel(
   removeTatweelOptions: IRemoveTatweelOptions = defaultRemoveTatweelOptions
 ): string {
   if (removeTatweelOptions.removeAuxiliairyOnly) {
+    // If the tatweel is followed by a SuperscriptAlef then don't remove it
     return arabicText.replace(/\u0640(?!\u0670)/g, "");
   } else {
     return arabicText.replace(/\u0640/g, "");
