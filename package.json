@@ -19,7 +19,7 @@
     "package.json"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean --minify",
     "test": "jest",
     "prepack": "npm run build"
   },
