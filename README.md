@@ -137,16 +137,6 @@ console.log(newString); // " عليكم"
 
 Demo website to show the main functionalities of the package: [arabic-utils.pages.dev](https://arabic-utils.pages.dev/)
 
-Ps: don't mind the styling I will update it one day 😅
-
-# TODO
-
-- [x] Add semi diacritics tolerance so that a token diacritics can be taken into account when doing checks ( example "كَتَبَ" === "كَتب" will be true but "كَتَبَ" === "كُتب" will be false)
-
-# Contributing
-
-You can report any bugs or do pull requests for any kind of improvement.
-
 # License
 
 [MIT](LICENSE)
